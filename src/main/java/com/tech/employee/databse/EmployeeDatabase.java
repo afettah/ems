@@ -3,7 +3,7 @@ package com.tech.employee.databse;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public interface EmployeeDatabase {
+interface EmployeeDatabase {
 
     void create(EmployeeRow employeeRow);
 

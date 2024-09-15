@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
-public class EmployeeRepositoryImpl implements EmployeeRepository {
+class EmployeeRepositoryImpl implements EmployeeRepository {
     private final EmployeeDatabase database;
 
-    public EmployeeRepositoryImpl(EmployeeDatabase database) {
+    EmployeeRepositoryImpl(EmployeeDatabase database) {
         this.database = database;
     }
 

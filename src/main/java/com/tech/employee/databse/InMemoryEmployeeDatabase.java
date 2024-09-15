@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-public class InMemoryEmployeeDatabase implements EmployeeDatabase {
+class InMemoryEmployeeDatabase implements EmployeeDatabase {
 
     private final Map<String, EmployeeRow> employeeRows = new ConcurrentHashMap<>();
 

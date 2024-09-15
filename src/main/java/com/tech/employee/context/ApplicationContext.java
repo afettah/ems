@@ -1,8 +1,6 @@
 package com.tech.employee.context;
 
-import com.tech.employee.databse.EmployeeDatabase;
-import com.tech.employee.databse.EmployeeRepositoryImpl;
-import com.tech.employee.databse.InMemoryEmployeeDatabase;
+import com.tech.employee.databse.DatabaseConfiguration;
 import com.tech.employee.domain.EmployeeRepository;
 import com.tech.employee.domain.EmployeeService;
 
@@ -39,8 +37,7 @@ public class ApplicationContext {
     }
 
     public void registerBeans() {
-        registerBean("employeeDatabase", employeeDatabase());
-        registerBean("employeeRepository", employeeRepository(this));
+        DatabaseConfiguration.initializeContext(this);
         registerBean("employeeService", employeeService(this));
     }
 
@@ -49,11 +46,5 @@ public class ApplicationContext {
         return new EmployeeService(context.getFirstBean(EmployeeRepository.class));
     }
 
-    EmployeeRepository employeeRepository(ApplicationContext context) {
-        return new EmployeeRepositoryImpl(context.getFirstBean(EmployeeDatabase.class));
-    }
 
-    EmployeeDatabase employeeDatabase() {
-        return new InMemoryEmployeeDatabase();
-    }
 }
