@@ -1,12 +1,12 @@
 package com.tech.employee.domain;
 
-class EmployeeFixtures {
+public class EmployeeFixtures {
 
     /**
      * Create a new employee with fixed values
      * @return always the same employee
      */
-    static Employee johnDoe() {
+    public static Employee johnDoe() {
         return Employee.create(EmployeeId.generate(), "john.doe@domain.com", "John Doe", "Software Engineer", Money.euro(50000));
     }
 
