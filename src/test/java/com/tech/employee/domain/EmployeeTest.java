@@ -28,7 +28,7 @@ class EmployeeTest {
             Employee employee = Employee.create(EmployeeId.generate(), email, name, position, salary);
 
             //then
-            assertThat(employee).extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary)
+            assertThat(employee).extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getMonthlySalary)
                     .containsExactly(employee.getId(), email, name, position, salary);
             assertThat(employee.getCreatedAt()).isNotNull();
             assertThat(employee.getUpdatedAt()).isNull();
@@ -65,7 +65,7 @@ class EmployeeTest {
         void equals_should_return_true_when_employee_ids_are_equal() {
             //given
             Employee employee = EmployeeFixtures.johnDoe();
-            Employee employee1 = new Employee(employee.getId(), employee.getEmail(), employee.getName(), employee.getPosition(), employee.getSalary(), employee.getCreatedAt(), employee.getUpdatedAt());
+            Employee employee1 = new Employee(employee.getId(), employee.getEmail(), employee.getName(), employee.getPosition(), employee.getMonthlySalary(), employee.getCreatedAt(), employee.getUpdatedAt());
             Employee employee2 = new Employee(employee.getId(), "other-email@domain.com", "Other Name", "Other Position", Money.euro(60000), Instant.now(), Instant.now());
 
 

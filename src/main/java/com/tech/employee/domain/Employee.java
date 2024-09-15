@@ -6,23 +6,23 @@ import lombok.ToString;
 import java.time.Instant;
 import java.util.Objects;
 
-@ToString(exclude = {"salary"})
+@ToString(exclude = {"monthlySalary"})
 @Getter
 public class Employee {
     private final EmployeeId id;
     private final String email;
     private final String name;
     private String position;
-    private Money salary;
+    private Money monthlySalary;
     private final Instant createdAt;
     private Instant updatedAt;
 
-    public Employee(EmployeeId id, String email, String name, String position, Money salary, Instant createdAt, Instant updatedAt) {
+    public Employee(EmployeeId id, String email, String name, String position, Money monthlySalary, Instant createdAt, Instant updatedAt) {
         Objects.requireNonNull(id, "Employee id cannot be null");
         Objects.requireNonNull(email, "Employee email cannot be null");
         Objects.requireNonNull(name, "Employee name cannot be null");
         Objects.requireNonNull(position, "Employee position cannot be null");
-        Objects.requireNonNull(salary, "Employee salary cannot be null");
+        Objects.requireNonNull(monthlySalary, "Employee salary cannot be null");
         Objects.requireNonNull(createdAt, "Employee createdAt cannot be null");
 
         this.id = id;
@@ -30,7 +30,7 @@ public class Employee {
         this.name = name;
         this.createdAt = createdAt;
         this.position = position;
-        this.salary = salary;
+        this.monthlySalary = monthlySalary;
         this.updatedAt = updatedAt;
     }
 
