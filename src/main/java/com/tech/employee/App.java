@@ -1,4 +1,4 @@
-package com.tech.employee.employee;
+package com.tech.employee;
 
 /**
  * Hello world!
