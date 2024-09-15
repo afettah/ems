@@ -38,6 +38,18 @@ public class Employee {
         return new Employee(id, email, name, position, salary, Instant.now(), null);
     }
 
+    public void updateMonthlySalary(Money salary) {
+        Objects.requireNonNull(salary, "Employee salary cannot be null");
+        this.monthlySalary = salary;
+        this.updatedAt = Instant.now();
+    }
+
+    public void updatePosition(String position) {
+        Objects.requireNonNull(position, "Employee position cannot be null");
+        this.position = position;
+        this.updatedAt = Instant.now();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

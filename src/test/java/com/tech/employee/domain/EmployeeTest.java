@@ -60,6 +60,37 @@ class EmployeeTest {
     }
 
     @Nested
+    class Update {
+        @Test
+        void update_monthly_salary_should_update_monthly_salary_and_updated_at() {
+            //given
+            Employee employee = EmployeeFixtures.johnDoe();
+            Money newSalary = Money.euro(60000);
+
+            //when
+            employee.updateMonthlySalary(newSalary);
+
+            //then
+            assertThat(employee.getMonthlySalary()).isEqualTo(newSalary);
+            assertThat(employee.getUpdatedAt()).isNotNull();
+        }
+
+        @Test
+        void update_position_should_update_position_and_updated_at() {
+            //given
+            Employee employee = EmployeeFixtures.johnDoe();
+            String newPosition = "New Position";
+
+            //when
+            employee.updatePosition(newPosition);
+
+            //then
+            assertThat(employee.getPosition()).isEqualTo(newPosition);
+            assertThat(employee.getUpdatedAt()).isNotNull();
+        }
+    }
+
+    @Nested
     class EqualsAndHashCode {
         @Test
         void equals_should_return_true_when_employee_ids_are_equal() {
