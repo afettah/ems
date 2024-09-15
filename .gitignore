@@ -1,0 +1,54 @@
+# Ignore IntelliJ files
+*.iml
+*.ipr
+*.iws
+.idea
+atlassian-ide-plugin.xml
+TODO.md
+
+# Ignore Eclipse files
+.classpath
+.project
+.settings
+.groovy
+
+# Ignore vim file
+*~
+*#
+
+*.chproj
+.DS_Store
+
+# Ignore specific file/directory
+target
+target-eclipse
+/lib
+stacktrace.log
+
+# Personal config
+plugins
+
+# Unknown temp files
+*.swp
+
+# Ignore any logs files
+*.log
+
+# Ignore git's conflicts file.
+*.orig
+
+*.tmp
+
+# VSCode
+.history
+.vscode
+
+# front
+**/.cache/**
+**/node_modules/**
+**/node/**
+**/dist/**
+temp
+
+# Front test prints
+**.print.**
