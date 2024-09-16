@@ -1,5 +1,7 @@
 package com.tech.employee.domain;
 
+import com.tech.employee.domain.salary.Money;
+import com.tech.employee.domain.salary.Salary;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,56 +24,77 @@ class EmployeeTest {
             String email = "email@domai.com";
             String name = "Employee Name";
             String position = "Position";
-            Money salary = Money.euro(10000.05);
+            Salary salary = Salary.fixedMonthlySalary(Money.euro(10000.05));
 
             //when
-            Employee employee = Employee.create(EmployeeId.generate(), email, name, position, salary);
+            Employee employee = Employee.create(new EmployeeCreateCommand(email, name, position, salary));
 
             //then
-            assertThat(employee).extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getMonthlySalary)
+            assertThat(employee).extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary)
                     .containsExactly(employee.getId(), email, name, position, salary);
             assertThat(employee.getCreatedAt()).isNotNull();
             assertThat(employee.getUpdatedAt()).isNull();
         }
 
         @ParameterizedTest
-        @MethodSource("provideEmployeeWithoutRequiredFields")
-        void create_employee_without_required_fields_should_throw_exception(String filed, EmployeeId id, String email, String name, String position, Money salary) {
+        @MethodSource("newEmployeeWithoutRequiredFields")
+        void new_employee_without_required_fields_should_throw_exception(String filed, EmployeeId id, String email, String name, String position, Salary salary) {
             //when
             //then
-            assertThatThrownBy(() -> Employee.create(id, email, name, position, salary))
+            assertThatThrownBy(() -> new Employee(id, email, name, position, salary, Instant.now(), Instant.now()))
                     .isInstanceOf(NullPointerException.class)
                     .hasMessageContaining(filed);
         }
 
-        static Stream<Arguments> provideEmployeeWithoutRequiredFields() {
+        @ParameterizedTest
+        @MethodSource("createEmployeeWithoutRequiredFields")
+        void create_employee_without_required_fields_should_throw_exception(String filed, EmployeeId id, String email, String name, String position, Salary salary) {
+            //when
+            //then
+            assertThatThrownBy(() -> Employee.create(new EmployeeCreateCommand(email, name, position, salary)))
+                    .isInstanceOf(NullPointerException.class)
+                    .hasMessageContaining(filed);
+        }
+
+        static Stream<Arguments> createEmployeeWithoutRequiredFields() {
             EmployeeId id = EmployeeId.generate();
             String email = "email@domain.com";
             String name = "Employee Name";
             String position = "Position";
-            Money salary = Money.euro(10000);
+            Salary salary = Salary.fixedMonthlySalary(Money.euro(10000));
             return Stream.of(
-                    Arguments.of("id", null, email, name, position, salary),
                     Arguments.of("email", id, null, name, position, salary),
                     Arguments.of("name", id, email, null, position, salary),
                     Arguments.of("position", id, email, name, null, salary),
                     Arguments.of("salary", id, email, name, position, null));
+        }
+
+        static Stream<Arguments> newEmployeeWithoutRequiredFields() {
+            String email = "email@domain.com";
+            String name = "Employee Name";
+            String position = "Position";
+            Salary salary = Salary.fixedMonthlySalary(Money.euro(10000));
+            return Stream.concat(
+                    createEmployeeWithoutRequiredFields(),
+                    Stream.of(
+                            Arguments.of("id", null, email, name, position, salary)
+                    ));
         }
     }
 
     @Nested
     class Update {
         @Test
-        void update_monthly_salary_should_update_monthly_salary_and_updated_at() {
+        void update_salary_should_update_salary_and_updated_at() {
             //given
             Employee employee = EmployeeFixtures.johnDoe();
-            Money newSalary = Money.euro(60000);
+            var newSalary = Salary.fixedMonthlySalary(Money.euro(60000));
 
             //when
-            employee.updateMonthlySalary(newSalary);
+            employee.updateSalary(newSalary);
 
             //then
-            assertThat(employee.getMonthlySalary()).isEqualTo(newSalary);
+            assertThat(employee.getSalary()).isEqualTo(newSalary);
             assertThat(employee.getUpdatedAt()).isNotNull();
         }
 
@@ -96,8 +119,8 @@ class EmployeeTest {
         void equals_should_return_true_when_employee_ids_are_equal() {
             //given
             Employee employee = EmployeeFixtures.johnDoe();
-            Employee employee1 = new Employee(employee.getId(), employee.getEmail(), employee.getName(), employee.getPosition(), employee.getMonthlySalary(), employee.getCreatedAt(), employee.getUpdatedAt());
-            Employee employee2 = new Employee(employee.getId(), "other-email@domain.com", "Other Name", "Other Position", Money.euro(60000), Instant.now(), Instant.now());
+            Employee employee1 = new Employee(employee.getId(), employee.getEmail(), employee.getName(), employee.getPosition(), employee.getSalary(), employee.getCreatedAt(), employee.getUpdatedAt());
+            Employee employee2 = new Employee(employee.getId(), "other-email@domain.com", "Other Name", "Other Position", Salary.fixedMonthlySalary(Money.euro(60000)), Instant.now(), Instant.now());
 
 
             //then

@@ -3,10 +3,7 @@ package com.tech.employee.databse;
 import com.tech.employee.domain.Employee;
 import com.tech.employee.domain.EmployeeId;
 import com.tech.employee.domain.EmployeeRepository;
-import com.tech.employee.domain.Money;
 
-import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.List;
 
 class EmployeeRepositoryImpl implements EmployeeRepository {
@@ -43,8 +40,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
                 .email(employee.getEmail())
                 .name(employee.getName())
                 .position(employee.getPosition())
-                .salary(employee.getMonthlySalary().amount().doubleValue())
-                .currency(employee.getMonthlySalary().currency().getCurrencyCode())
+                .salary(employee.getSalary())
                 .createdAt(employee.getCreatedAt())
                 .updatedAt(employee.getUpdatedAt())
                 .build();
@@ -52,10 +48,6 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     private Employee mapToEmployee(EmployeeRow row) {
         return new Employee(EmployeeId.fromString(row.getId()), row.getEmail(), row.getName(), row.getPosition(),
-                mapToMoney(row.getSalary(), row.getCurrency()), row.getCreatedAt(), row.getUpdatedAt());
-    }
-
-    private Money mapToMoney(double salary, String currency) {
-        return Money.of(BigDecimal.valueOf(salary), Currency.getInstance(currency));
+                row.getSalary(), row.getCreatedAt(), row.getUpdatedAt());
     }
 }

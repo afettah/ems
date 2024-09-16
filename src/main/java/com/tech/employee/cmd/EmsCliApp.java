@@ -5,9 +5,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tech.employee.context.ApplicationContext;
 import com.tech.employee.domain.Employee;
-import com.tech.employee.domain.EmployeeId;
+import com.tech.employee.domain.EmployeeCreateCommand;
 import com.tech.employee.domain.EmployeeService;
-import com.tech.employee.domain.Money;
+import com.tech.employee.domain.salary.Money;
+import com.tech.employee.domain.salary.Salary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import static com.tech.employee.cmd.TableDisplayUtils.displayTable;
 public class EmsCliApp {
     private final EmployeeService employeeService;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final EmployeeDomainMapper employeeDomainMapper = new EmployeeDomainMapper();
 
     static {
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
@@ -112,7 +114,7 @@ public class EmsCliApp {
         List<Map<String, Object>> employeeList = new ArrayList<>();
         var employees = employeeService.findAll();
         for (Employee employee : employees) {
-            employeeList.add(OBJECT_MAPPER.convertValue(new EmployeeResponse(employee), Map.class));
+            employeeList.add(OBJECT_MAPPER.convertValue(employeeDomainMapper.mapToResponse(employee), Map.class));
         }
 
         displayTable(employeeList, "id", "email", "name", "position", "salary", "createdAt", "updatedAt");
@@ -131,7 +133,7 @@ public class EmsCliApp {
         double salary = scanner.nextDouble();
         scanner.nextLine(); // Consume the newline
 
-        Employee newEmployee = Employee.create(EmployeeId.generate(), email, name, position, Money.euro(salary));
+        Employee newEmployee = Employee.create(new EmployeeCreateCommand(email, name, position, Salary.fixedMonthlySalary(Money.euro(salary))));
         employeeService.create(newEmployee);
         System.out.println("Employee created successfully.");
     }
@@ -168,7 +170,7 @@ public class EmsCliApp {
                 String position = "Position " + employeeNumber;
                 double salary = 1000 + (employeeNumber * 100);
 
-                Employee newEmployee = Employee.create(EmployeeId.generate(), email, name, position, Money.euro(salary));
+                Employee newEmployee = Employee.create(new EmployeeCreateCommand(email, name, position, Salary.fixedMonthlySalary(Money.euro(salary))));
                 employeeService.create(newEmployee);
             });
         }

@@ -1,5 +1,6 @@
 package com.tech.employee.databse;
 
+import com.tech.employee.domain.salary.Salary;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +18,7 @@ class EmployeeRow {
     private String name;
     private String phone;
     private String position;
-    private double salary;
-    private String currency;
+    private Salary salary;
     private Instant createdAt;
     private Instant updatedAt;
 }

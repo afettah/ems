@@ -1,4 +1,4 @@
-package com.tech.employee.domain;
+package com.tech.employee.domain.salary;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -17,5 +17,10 @@ public record Money(BigDecimal amount, Currency currency) {
 
     public static Money euro(double amount) {
         return new Money(BigDecimal.valueOf(amount), Currency.getInstance("EUR"));
+    }
+
+    @Override
+    public String toString() {
+        return amount + " " + currency.getSymbol();
     }
 }

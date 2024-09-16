@@ -2,7 +2,8 @@ package com.tech.employee.databse;
 
 import com.tech.employee.domain.Employee;
 import com.tech.employee.domain.EmployeeFixtures;
-import com.tech.employee.domain.Money;
+import com.tech.employee.domain.salary.Money;
+import com.tech.employee.domain.salary.Salary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,8 +36,8 @@ class EmployeeRepositoryImplTest {
             //then
             assertThat(actualEmployee)
                     .isEqualTo(expectedEmployee)
-                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getMonthlySalary, Employee::getCreatedAt, Employee::getUpdatedAt)
-                    .containsExactly(expectedEmployee.getId(), expectedEmployee.getEmail(), expectedEmployee.getName(), expectedEmployee.getPosition(), expectedEmployee.getMonthlySalary(), expectedEmployee.getCreatedAt(), expectedEmployee.getUpdatedAt());
+                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary, Employee::getCreatedAt, Employee::getUpdatedAt)
+                    .containsExactly(expectedEmployee.getId(), expectedEmployee.getEmail(), expectedEmployee.getName(), expectedEmployee.getPosition(), expectedEmployee.getSalary(), expectedEmployee.getCreatedAt(), expectedEmployee.getUpdatedAt());
         }
 
         @Test
@@ -61,7 +62,7 @@ class EmployeeRepositoryImplTest {
             //given
             Employee employee = EmployeeFixtures.generate();
             employeeRepositoryImpl.create(employee);
-            Employee updatedEmployee = new Employee(employee.getId(), "new-email@domai.com", "new-name", "new-position", Money.euro(1), Instant.now(), Instant.now());
+            Employee updatedEmployee = new Employee(employee.getId(), "new-email@domai.com", "new-name", "new-position", Salary.fixedMonthlySalary(Money.euro(1)), Instant.now(), Instant.now());
 
             //when
             employeeRepositoryImpl.update(updatedEmployee);
@@ -70,8 +71,8 @@ class EmployeeRepositoryImplTest {
             //then
             assertThat(actualEmployee)
                     .isEqualTo(updatedEmployee)
-                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getMonthlySalary, Employee::getCreatedAt, Employee::getUpdatedAt)
-                    .containsExactly(updatedEmployee.getId(), updatedEmployee.getEmail(), updatedEmployee.getName(), updatedEmployee.getPosition(), updatedEmployee.getMonthlySalary(), updatedEmployee.getCreatedAt(), updatedEmployee.getUpdatedAt());
+                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary, Employee::getCreatedAt, Employee::getUpdatedAt)
+                    .containsExactly(updatedEmployee.getId(), updatedEmployee.getEmail(), updatedEmployee.getName(), updatedEmployee.getPosition(), updatedEmployee.getSalary(), updatedEmployee.getCreatedAt(), updatedEmployee.getUpdatedAt());
         }
 
         @Test

@@ -1,5 +1,6 @@
 package com.tech.employee.domain;
 
+import com.tech.employee.domain.salary.Money;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

@@ -1,5 +1,10 @@
 package com.tech.employee.domain;
 
+import com.tech.employee.domain.salary.Money;
+import com.tech.employee.domain.salary.Salary;
+
+import java.time.Instant;
+
 public class EmployeeFixtures {
 
     /**
@@ -7,7 +12,7 @@ public class EmployeeFixtures {
      * @return always the same employee
      */
     public static Employee johnDoe() {
-        return Employee.create(EmployeeId.generate(), "john.doe@domain.com", "John Doe", "Software Engineer", Money.euro(50000));
+        return Employee.create(new EmployeeCreateCommand("john.doe@domain.com", "John Doe", "Software Engineer", Salary.fixedMonthlySalary(Money.euro(50000))));
     }
 
     public static Employee generate() {
@@ -15,6 +20,6 @@ public class EmployeeFixtures {
     }
 
     public static Employee generate(EmployeeId id) {
-        return Employee.create(id,  "email-" + id + "@domain.com", "name" + id, "position" + id, Money.euro(10000));
+        return new Employee(id,  "email-" + id + "@domain.com", "name" + id, "position" + id, Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
     }
 }

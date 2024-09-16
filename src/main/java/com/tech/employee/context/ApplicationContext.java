@@ -7,6 +7,15 @@ import com.tech.employee.domain.EmployeeService;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Simple application context implementation
+ * <p>
+ *     This class is responsible for managing beans in the application context.
+ *     It provides a way to register beans and get them by type.
+ *
+ * <p>
+ *     Currently, we don't use external libraries for dependency injection, so we have to manage it manually.
+ */
 public class ApplicationContext {
     private static final ApplicationContext INSTANCE = new ApplicationContext();
 
