@@ -19,5 +19,13 @@ I made some improvements to the Employee domain model to enhance scalability and
 These improvements are just examples of how the domain can be optimized.
 
 In a real-world scenario, the design should be refined in collaboration with the Product team to ensure all the requirements for a complex domain like salary management are met.
-### Dependencies
+
+## Jooq
+
+### jOOQ generation
+```bash
+
+mvn clean compile -DskipTests -Pjooq-gen
+```
+## Dependencies
 

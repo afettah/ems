@@ -229,6 +229,18 @@
 							</sources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>add-it-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
