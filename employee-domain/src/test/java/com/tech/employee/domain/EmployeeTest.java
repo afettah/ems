@@ -111,6 +111,40 @@ class EmployeeTest {
             assertThat(employee.getPosition()).isEqualTo(newPosition);
             assertThat(employee.getUpdatedAt()).isNotNull();
         }
+
+        @Test
+        void update_should_update_position_and_salary() {
+            //given
+            Employee employee = EmployeeFixtures.johnDoe();
+            var updateSalary = Salary.fixedMonthlySalary(Money.euro(60000));
+            var updatePosition = "New Position";
+            EmployeeUpdateCommand employeeUpdateCommand = new EmployeeUpdateCommand(updatePosition, updateSalary);
+
+            //when
+            employee.update(employeeUpdateCommand);
+
+            //then
+            assertThat(employee.getPosition()).isEqualTo(updatePosition);
+            assertThat(employee.getSalary()).isEqualTo(updateSalary);
+            assertThat(employee.getUpdatedAt()).isNotNull();
+        }
+
+        @Test
+        void update_should_not_update_position_and_salary_when_command_is_empty() {
+            //given
+            Employee employee = EmployeeFixtures.johnDoe();
+            var internalSalary = employee.getSalary();
+            var internalPosition = employee.getPosition();
+            EmployeeUpdateCommand employeeUpdateCommand = new EmployeeUpdateCommand(null, null);
+
+            //when
+            employee.update(employeeUpdateCommand);
+
+            //then
+            assertThat(employee.getPosition()).isEqualTo(internalPosition);
+            assertThat(employee.getSalary()).isEqualTo(internalSalary);
+            assertThat(employee.getUpdatedAt()).isNull();
+        }
     }
 
     @Nested

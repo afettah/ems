@@ -27,7 +27,7 @@ public class Employee {
         Objects.requireNonNull(createdAt, "Employee createdAt cannot be null");
 
         this.id = id;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.name = name;
         this.createdAt = createdAt;
         this.position = position;
@@ -37,6 +37,11 @@ public class Employee {
 
     public static Employee create(EmployeeCreateCommand command) {
         return new Employee(EmployeeId.generate(), command.email(), command.name(), command.position(), command.salary(), Instant.now(), null);
+    }
+
+    public void update(EmployeeUpdateCommand employeeCommand) {
+        employeeCommand.getPosition().ifPresent(this::updatePosition);
+        employeeCommand.getSalary().ifPresent(this::updateSalary);
     }
 
     public void updateSalary(Salary salary) {

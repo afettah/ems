@@ -7,4 +7,7 @@ public interface EmployeeRepository {
     void update(Employee employee);
     Employee getById(EmployeeId id);
     List<Employee> findAll();
+    List<Employee> findAll(EmployeeFilter filter);
+    void delete(EmployeeId employeeId);
+
 }
