@@ -5,7 +5,9 @@ package com.tech.employee.jooq.generated;
 
 
 import com.tech.employee.jooq.generated.tables.JEmployees;
+import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
 import com.tech.employee.jooq.generated.tables.records.JEmployeesRecord;
+import com.tech.employee.jooq.generated.tables.records.JFlywaySchemaHistoryRecord;
 
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -24,4 +26,5 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<JEmployeesRecord> EMPLOYEES_PKEY = Internal.createUniqueKey(JEmployees.EMPLOYEES, DSL.name("employees_pkey"), new TableField[] { JEmployees.EMPLOYEES.ID }, true);
+    public static final UniqueKey<JFlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
 }

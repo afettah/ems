@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @ShellComponent
 @AllArgsConstructor
@@ -76,6 +77,9 @@ class EmployeeManagementCommands {
 
     @ShellMethod(key = "generate", value = "Generate a number of employees. Usage: generate <count> <threadCount>")
     public String generateEmployees(@ShellOption(help = "employee count") Integer employeeCount, @ShellOption(defaultValue = "1", help = "threadCount") Integer threadCountValue) throws InterruptedException {
+
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
         try (ExecutorService executorService = Executors.newFixedThreadPool(threadCountValue)) {
             for (int i = 0; i < employeeCount; i++) {
                 int employeeNumber = i + 1;
@@ -84,14 +88,21 @@ class EmployeeManagementCommands {
                     String name = "Employee " + employeeNumber;
                     String position = "Position " + employeeNumber;
                     double salary = 1000d + (employeeNumber * 100);
-                    employeeService.create(new EmployeeCreateCommand(email, name, position, Salary.fixedMonthlySalary(Money.euro(salary))));
+                    try {
+                        var employeeCreateCommand = new EmployeeCreateCommand(email, name, position, Salary.fixedMonthlySalary(Money.euro(salary)));
+                        employeeService.create(employeeCreateCommand);
+                        successCount.incrementAndGet();
+                    } catch (Exception e) {
+                        log.error("Error creating employee: " + e.getMessage());
+                        errorCount.incrementAndGet();
+                    }
                 });
             }
 
             executorService.shutdown();
             executorService.awaitTermination(1, TimeUnit.MINUTES);
         }
-        return "Generated " + employeeCount + " employees using " + threadCountValue + " threads.";
+        return "Employees generated successfully. Success: " + successCount.get() + ", Errors: " + errorCount.get();
     }
 
 }

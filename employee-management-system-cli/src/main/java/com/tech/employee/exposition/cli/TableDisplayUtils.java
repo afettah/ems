@@ -33,6 +33,8 @@ class TableDisplayUtils {
         // Print closing separator
         printSeparator(columnWidths, builder);
 
+        builder.append("Total: ").append(data.size()).append(" rows\n");
+
         return builder.toString();
     }
 

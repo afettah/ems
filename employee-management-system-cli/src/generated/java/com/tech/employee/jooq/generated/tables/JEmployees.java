@@ -5,16 +5,20 @@ package com.tech.employee.jooq.generated.tables;
 
 
 import com.tech.employee.infrastructure.InstantConverter;
+import com.tech.employee.jooq.generated.Indexes;
 import com.tech.employee.jooq.generated.JEms;
 import com.tech.employee.jooq.generated.Keys;
 import com.tech.employee.jooq.generated.tables.records.JEmployeesRecord;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.Index;
 import org.jooq.JSONB;
 import org.jooq.Name;
 import org.jooq.PlainSQL;
@@ -120,6 +124,11 @@ public class JEmployees extends TableImpl<JEmployeesRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : JEms.EMS;
+    }
+
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.EMPLOYEES_EMAIL);
     }
 
     @Override

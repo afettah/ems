@@ -5,6 +5,7 @@ package com.tech.employee.jooq.generated;
 
 
 import com.tech.employee.jooq.generated.tables.JEmployees;
+import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,11 @@ public class JEms extends SchemaImpl {
     public final JEmployees EMPLOYEES = JEmployees.EMPLOYEES;
 
     /**
+     * The table <code>ems.flyway_schema_history</code>.
+     */
+    public final JFlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+
+    /**
      * No further instances allowed
      */
     private JEms() {
@@ -48,7 +54,8 @@ public class JEms extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            JEmployees.EMPLOYEES
+            JEmployees.EMPLOYEES,
+            JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY
         );
     }
 }
