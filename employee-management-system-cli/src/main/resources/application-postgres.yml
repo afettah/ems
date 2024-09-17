@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/ems
+    username: ems_user
+    password: ems_password
+    driver-class-name: org.postgresql.Driver
