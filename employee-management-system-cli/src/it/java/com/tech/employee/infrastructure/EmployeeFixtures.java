@@ -31,6 +31,6 @@ public class EmployeeFixtures {
     }
 
     public static Employee generate(EmployeeId id, String name) {
-        return new Employee(id,  "email-" + id + "@domain.com", name, "position" + id, Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
+        return new Employee(id,  "email-" + id.id() + "@domain.com", name, "position" + id, Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
     }
 }

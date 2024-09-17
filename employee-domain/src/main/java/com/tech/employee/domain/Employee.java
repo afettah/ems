@@ -25,6 +25,9 @@ public class Employee {
         Objects.requireNonNull(position, "Employee position cannot be null");
         Objects.requireNonNull(salary, "Employee salary cannot be null");
         Objects.requireNonNull(createdAt, "Employee createdAt cannot be null");
+        if (!EmailValidator.isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
 
         this.id = id;
         this.email = email.toLowerCase();

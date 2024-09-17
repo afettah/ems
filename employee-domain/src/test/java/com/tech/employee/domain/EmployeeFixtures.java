@@ -20,6 +20,6 @@ public class EmployeeFixtures {
     }
 
     public static Employee generate(EmployeeId id) {
-        return new Employee(id,  "email-" + id + "@domain.com", "name" + id, "position" + id, Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
+        return new Employee(id,  "email-" + id.id() + "@domain.com", "name" + id.id(), "position" + id, Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
     }
 }

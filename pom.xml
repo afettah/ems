@@ -19,7 +19,8 @@
     <spring-boot.version>3.3.3</spring-boot.version>
     <spring-shell.version>3.3.2</spring-shell.version>
     <hibernate.version>6.5.2.Final</hibernate.version>
-    </properties>
+    <commons-validator.version>1.9.0</commons-validator.version>
+  </properties>
 
 
   <modules>
