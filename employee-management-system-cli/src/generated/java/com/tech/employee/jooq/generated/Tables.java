@@ -6,6 +6,7 @@ package com.tech.employee.jooq.generated;
 
 import com.tech.employee.jooq.generated.tables.JEmployeeTimeoff;
 import com.tech.employee.jooq.generated.tables.JEmployees;
+import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
 import com.tech.employee.jooq.generated.tables.JTimeoffCategory;
 
 
@@ -24,6 +25,11 @@ public class Tables {
      * The table <code>ems.employees</code>.
      */
     public static final JEmployees EMPLOYEES = JEmployees.EMPLOYEES;
+
+    /**
+     * The table <code>ems.flyway_schema_history</code>.
+     */
+    public static final JFlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
      * The table <code>ems.timeoff_category</code>.

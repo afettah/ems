@@ -72,9 +72,9 @@ public class JEmployeeTimeoff extends TableImpl<JEmployeeTimeoffRecord> {
     public final TableField<JEmployeeTimeoffRecord, UUID> EMPLOYEE_ID = createField(DSL.name("employee_id"), SQLDataType.UUID.nullable(false), this, "");
 
     /**
-     * The column <code>ems.employee_timeoff.category</code>.
+     * The column <code>ems.employee_timeoff.category_id</code>.
      */
-    public final TableField<JEmployeeTimeoffRecord, UUID> CATEGORY = createField(DSL.name("category"), SQLDataType.UUID.nullable(false), this, "");
+    public final TableField<JEmployeeTimeoffRecord, UUID> CATEGORY_ID = createField(DSL.name("category_id"), SQLDataType.UUID.nullable(false), this, "");
 
     /**
      * The column <code>ems.employee_timeoff.start_date</code>.

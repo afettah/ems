@@ -7,11 +7,7 @@ public record TimeOffCategory(CategoryId id, String name, String description, bo
         }
     }
 
-    public static TimeOffCategory create(String name, String description, boolean paid) {
-        return new TimeOffCategory(CategoryId.generate(), name, description, paid, false);
-    }
-
-    public static TimeOffCategory createAutoCancelable(String name, String description, boolean paid) {
-        return new TimeOffCategory(CategoryId.generate(), name, description, paid, true);
+    public static TimeOffCategory create(String name, String description, boolean paid, boolean autoCancellable) {
+        return new TimeOffCategory(CategoryId.generate(), name, description, paid, autoCancellable);
     }
 }

@@ -37,8 +37,9 @@ public class TimeOff {
         return category.autoCancellable();
     }
 
-    enum TimeOffStatus {
-        REQUESTED
+    public enum TimeOffStatus {
+        REQUESTED,
+        CANCELLED
     }
 
 }

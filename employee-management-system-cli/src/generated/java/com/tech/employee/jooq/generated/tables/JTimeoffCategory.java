@@ -78,9 +78,9 @@ public class JTimeoffCategory extends TableImpl<JTimeoffCategoryRecord> {
     public final TableField<JTimeoffCategoryRecord, Boolean> PAID = createField(DSL.name("paid"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
-     * The column <code>ems.timeoff_category.auto_cancel</code>.
+     * The column <code>ems.timeoff_category.auto_cancellable</code>.
      */
-    public final TableField<JTimeoffCategoryRecord, Boolean> AUTO_CANCEL = createField(DSL.name("auto_cancel"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<JTimeoffCategoryRecord, Boolean> AUTO_CANCELLABLE = createField(DSL.name("auto_cancellable"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>ems.timeoff_category.created_at</code>.

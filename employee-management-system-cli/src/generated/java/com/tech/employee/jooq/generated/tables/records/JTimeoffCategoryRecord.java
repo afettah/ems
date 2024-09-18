@@ -78,16 +78,16 @@ public class JTimeoffCategoryRecord extends UpdatableRecordImpl<JTimeoffCategory
     }
 
     /**
-     * Setter for <code>ems.timeoff_category.auto_cancel</code>.
+     * Setter for <code>ems.timeoff_category.auto_cancellable</code>.
      */
-    public void setAutoCancel(Boolean value) {
+    public void setAutoCancellable(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>ems.timeoff_category.auto_cancel</code>.
+     * Getter for <code>ems.timeoff_category.auto_cancellable</code>.
      */
-    public Boolean getAutoCancel() {
+    public Boolean getAutoCancellable() {
         return (Boolean) get(4);
     }
 
@@ -142,14 +142,14 @@ public class JTimeoffCategoryRecord extends UpdatableRecordImpl<JTimeoffCategory
     /**
      * Create a detached, initialised JTimeoffCategoryRecord
      */
-    public JTimeoffCategoryRecord(UUID id, String name, String description, Boolean paid, Boolean autoCancel, Instant createdAt, Instant updatedAt) {
+    public JTimeoffCategoryRecord(UUID id, String name, String description, Boolean paid, Boolean autoCancellable, Instant createdAt, Instant updatedAt) {
         super(JTimeoffCategory.TIMEOFF_CATEGORY);
 
         setId(id);
         setName(name);
         setDescription(description);
         setPaid(paid);
-        setAutoCancel(autoCancel);
+        setAutoCancellable(autoCancellable);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
         resetChangedOnNotNull();

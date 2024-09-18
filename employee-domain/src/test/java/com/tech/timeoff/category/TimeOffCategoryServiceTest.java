@@ -30,7 +30,7 @@ class TimeOffCategoryServiceTest {
         boolean paid = true;
 
         //when
-        TimeOffCategory category = timeOffCategoryService.createCategory(name, description, paid);
+        TimeOffCategory category = timeOffCategoryService.createCategory(name, description, paid, false);
 
         //then
         assertThat(category.id()).isNotNull();
@@ -53,7 +53,7 @@ class TimeOffCategoryServiceTest {
 
         //when
         //then
-        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> timeOffCategoryService.createCategory(name, description, paid));
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> timeOffCategoryService.createCategory(name, description, paid, false));
         assertThat(exception).hasMessageContaining(field);
     }
 }

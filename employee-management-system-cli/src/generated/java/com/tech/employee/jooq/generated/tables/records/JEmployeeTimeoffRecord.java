@@ -51,16 +51,16 @@ public class JEmployeeTimeoffRecord extends UpdatableRecordImpl<JEmployeeTimeoff
     }
 
     /**
-     * Setter for <code>ems.employee_timeoff.category</code>.
+     * Setter for <code>ems.employee_timeoff.category_id</code>.
      */
-    public void setCategory(UUID value) {
+    public void setCategoryId(UUID value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>ems.employee_timeoff.category</code>.
+     * Getter for <code>ems.employee_timeoff.category_id</code>.
      */
-    public UUID getCategory() {
+    public UUID getCategoryId() {
         return (UUID) get(2);
     }
 
@@ -171,12 +171,12 @@ public class JEmployeeTimeoffRecord extends UpdatableRecordImpl<JEmployeeTimeoff
     /**
      * Create a detached, initialised JEmployeeTimeoffRecord
      */
-    public JEmployeeTimeoffRecord(UUID id, UUID employeeId, UUID category, LocalDate startDate, LocalDate endDate, String status, String comment, Instant createdAt, Instant updatedAt) {
+    public JEmployeeTimeoffRecord(UUID id, UUID employeeId, UUID categoryId, LocalDate startDate, LocalDate endDate, String status, String comment, Instant createdAt, Instant updatedAt) {
         super(JEmployeeTimeoff.EMPLOYEE_TIMEOFF);
 
         setId(id);
         setEmployeeId(employeeId);
-        setCategory(category);
+        setCategoryId(categoryId);
         setStartDate(startDate);
         setEndDate(endDate);
         setStatus(status);
