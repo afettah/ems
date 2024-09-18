@@ -4,11 +4,12 @@
 package com.tech.employee.jooq.generated.tables;
 
 
-import com.tech.shared.infrastructure.InstantConverter;
 import com.tech.employee.jooq.generated.Indexes;
 import com.tech.employee.jooq.generated.JEms;
 import com.tech.employee.jooq.generated.Keys;
+import com.tech.employee.jooq.generated.tables.JEmployeeTimeoff.JEmployeeTimeoffPath;
 import com.tech.employee.jooq.generated.tables.records.JEmployeesRecord;
+import com.tech.shared.infrastructure.InstantConverter;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -18,11 +19,15 @@ import java.util.UUID;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.JSONB;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -121,6 +126,39 @@ public class JEmployees extends TableImpl<JEmployeesRecord> {
         this(DSL.name("employees"), null);
     }
 
+    public <O extends Record> JEmployees(Table<O> path, ForeignKey<O, JEmployeesRecord> childPath, InverseForeignKey<O, JEmployeesRecord> parentPath) {
+        super(path, childPath, parentPath, EMPLOYEES);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class JEmployeesPath extends JEmployees implements Path<JEmployeesRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> JEmployeesPath(Table<O> path, ForeignKey<O, JEmployeesRecord> childPath, InverseForeignKey<O, JEmployeesRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private JEmployeesPath(Name alias, Table<JEmployeesRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public JEmployeesPath as(String alias) {
+            return new JEmployeesPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public JEmployeesPath as(Name alias) {
+            return new JEmployeesPath(alias, this);
+        }
+
+        @Override
+        public JEmployeesPath as(Table<?> alias) {
+            return new JEmployeesPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : JEms.EMS;
@@ -134,6 +172,19 @@ public class JEmployees extends TableImpl<JEmployeesRecord> {
     @Override
     public UniqueKey<JEmployeesRecord> getPrimaryKey() {
         return Keys.EMPLOYEES_PKEY;
+    }
+
+    private transient JEmployeeTimeoffPath _employeeTimeoff;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>ems.employee_timeoff</code> table
+     */
+    public JEmployeeTimeoffPath employeeTimeoff() {
+        if (_employeeTimeoff == null)
+            _employeeTimeoff = new JEmployeeTimeoffPath(this, null, Keys.EMPLOYEE_TIMEOFF__EMPLOYEE_TIMEOFF_EMPLOYEE_ID_FKEY.getInverseKey());
+
+        return _employeeTimeoff;
     }
 
     @Override

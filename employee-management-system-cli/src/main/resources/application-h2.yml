@@ -1,7 +1,9 @@
 spring:
-  docker:
-    compose:
-      enabled: false
+  datasource:
+    url: jdbc:h2:mem:testdb;DATABASE_TO_UPPER=false;INIT=CREATE SCHEMA IF NOT EXISTS ems
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
   flyway:
     placeholders:
       jsonType: TEXT

@@ -5,7 +5,6 @@ package com.tech.employee.jooq.generated;
 
 
 import com.tech.employee.jooq.generated.tables.JEmployees;
-import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
 
 import org.jooq.Index;
 import org.jooq.OrderField;
@@ -24,5 +23,4 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index EMPLOYEES_EMAIL = Internal.createIndex(DSL.name("employees_email"), JEmployees.EMPLOYEES, new OrderField[] { JEmployees.EMPLOYEES.EMAIL }, true);
-    public static final Index FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex(DSL.name("flyway_schema_history_s_idx"), JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
 }

@@ -8,6 +8,29 @@ This project is written in java.
 
 ## Getting Started
 
+## Run Modes
+
+This project supports two modes: **H2 (in-memory)** mode and **PostgreSQL** mode. You can easily switch between them using Spring profiles depending on your needs.
+
+### H2 Mode
+In **H2 mode**, the application uses an in-memory H2 database, which is ideal for rapid development and testing. The H2 database is embedded and non-persistent, so all data is lost when the application is stopped. This mode is useful for scenarios where you don't need permanent data storage.
+
+### PostgreSQL Mode
+In **PostgreSQL mode**, the application runs with a PostgreSQL database container using Docker. This mode provides a more realistic setup for development environments that simulate production. Keep in mind that the `docker-compose.yml` provided is designed for development only and does not persist data.
+
+### Switching Between Modes
+You can specify which mode to run by using Spring profiles:
+
+- To run the application in **H2 mode**, use the `h2` profile:
+  ```bash
+    SPRING_PROFILES_ACTIVE=h2 ./mvnw -pl employee-management-system-cli spring-boot:run -DskipTests
+    ```
+
+- To run the application in PostgreSQL mode, use the postgres profile:
+  ```bash
+    docker-compose up -d && SPRING_PROFILES_ACTIVE=postgres ./mvnw -pl employee-management-system-cli spring-boot:run -DskipTests
+    ```
+
 ## Jooq
 
 ### jOOQ generation

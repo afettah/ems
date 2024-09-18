@@ -4,8 +4,9 @@
 package com.tech.employee.jooq.generated;
 
 
+import com.tech.employee.jooq.generated.tables.JEmployeeTimeoff;
 import com.tech.employee.jooq.generated.tables.JEmployees;
-import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
+import com.tech.employee.jooq.generated.tables.JTimeoffCategory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +30,19 @@ public class JEms extends SchemaImpl {
     public static final JEms EMS = new JEms();
 
     /**
+     * The table <code>ems.employee_timeoff</code>.
+     */
+    public final JEmployeeTimeoff EMPLOYEE_TIMEOFF = JEmployeeTimeoff.EMPLOYEE_TIMEOFF;
+
+    /**
      * The table <code>ems.employees</code>.
      */
     public final JEmployees EMPLOYEES = JEmployees.EMPLOYEES;
 
     /**
-     * The table <code>ems.flyway_schema_history</code>.
+     * The table <code>ems.timeoff_category</code>.
      */
-    public final JFlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+    public final JTimeoffCategory TIMEOFF_CATEGORY = JTimeoffCategory.TIMEOFF_CATEGORY;
 
     /**
      * No further instances allowed
@@ -54,8 +60,9 @@ public class JEms extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            JEmployeeTimeoff.EMPLOYEE_TIMEOFF,
             JEmployees.EMPLOYEES,
-            JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY
+            JTimeoffCategory.TIMEOFF_CATEGORY
         );
     }
 }
