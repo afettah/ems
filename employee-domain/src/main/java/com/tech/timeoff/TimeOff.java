@@ -29,9 +29,6 @@ public class TimeOff {
         if (timeOffRequest.dateRange() == null) {
             throw new IllegalArgumentException("dateRange cannot be null");
         }
-        if (timeOffRequest.comment() == null) {
-            throw new IllegalArgumentException("comment cannot be null");
-        }
 
         return new TimeOff(TimeOffId.generate(), timeOffRequest.employeeId(), timeOffRequest.categoryId(), timeOffRequest.dateRange(), timeOffRequest.comment(), TimeOffStatus.REQUESTED);
     }

@@ -9,6 +9,7 @@ import org.jooq.DSLContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.tech.employee.jooq.generated.Tables.EMPLOYEES;
 
@@ -47,11 +48,16 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public Employee getById(EmployeeId id) {
+    public Optional<Employee> findById(EmployeeId id) {
         return dslContext.selectFrom(EMPLOYEES)
                 .where(EMPLOYEES.ID.eq(id.uuid()))
                 .fetchOptional()
-                .map(EmployeeJooqRepositoryImpl::mapToEmployee)
+                .map(EmployeeJooqRepositoryImpl::mapToEmployee);
+    }
+
+    @Override
+    public Employee getById(EmployeeId id) {
+        return findById(id)
                 .orElseThrow(() -> new DataNotFoundException(EMPLOYEE_ENTITY, id));
     }
 
