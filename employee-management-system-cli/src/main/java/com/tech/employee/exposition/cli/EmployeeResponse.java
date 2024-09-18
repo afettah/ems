@@ -2,7 +2,7 @@ package com.tech.employee.exposition.cli;
 
 import com.tech.employee.domain.Employee;
 import com.tech.employee.domain.salary.Salary;
-import com.tech.employee.exposition.user.UserContext;
+import com.tech.shared.user.UserContext;
 
 import java.time.Instant;
 import java.util.stream.Collectors;

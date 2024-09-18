@@ -1,7 +1,7 @@
-package com.tech.employee.exposition.cli;
+package com.tech.preferences.exposition.cli;
 
-import com.tech.employee.exposition.user.User;
-import com.tech.employee.exposition.user.UserContext;
+import com.tech.shared.user.User;
+import com.tech.shared.user.UserContext;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.shell.standard.ShellComponent;

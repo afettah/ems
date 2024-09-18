@@ -1,4 +1,4 @@
-package com.tech.employee.infrastructure;
+package com.tech.shared.infrastructure;
 
 import jakarta.validation.constraints.NotNull;
 import org.jooq.Converter;

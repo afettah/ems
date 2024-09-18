@@ -1,4 +1,4 @@
-package com.tech.employee.exposition.cli;
+package com.tech.shared.cli;
 
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;

@@ -150,7 +150,7 @@
 							<forcedTypes>
 								<forcedType>
 									<userType>java.time.Instant</userType>
-									<converter>com.tech.employee.infrastructure.InstantConverter</converter>
+									<converter>com.tech.shared.infrastructure.InstantConverter</converter>
 									<includeTypes>timestamp\swith\stime\szone</includeTypes>
 								</forcedType>
 							</forcedTypes>
@@ -207,7 +207,7 @@
 							<goal>repackage</goal>
 						</goals>
 						<configuration>
-							<mainClass>com.tech.employee.EMSApplication</mainClass>
+							<mainClass>com.tech.EMSApplication</mainClass>
 						</configuration>
 					</execution>
 				</executions>

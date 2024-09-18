@@ -1,4 +1,4 @@
-package com.tech.employee.infrastructure;
+package com.tech.shared.infrastructure;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

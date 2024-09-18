@@ -2,6 +2,7 @@ package com.tech.employee.infrastructure;
 
 import com.tech.employee.domain.*;
 import com.tech.employee.domain.salary.Salary;
+import com.tech.shared.infrastructure.JsonbMapper;
 import com.tech.employee.jooq.generated.tables.records.JEmployeesRecord;
 import lombok.AllArgsConstructor;
 import org.jooq.Condition;

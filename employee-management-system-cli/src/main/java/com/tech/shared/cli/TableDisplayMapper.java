@@ -1,13 +1,35 @@
-package com.tech.employee.exposition.cli;
+package com.tech.shared.cli;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class TableDisplayUtils {
-    private TableDisplayUtils() {
+@AllArgsConstructor
+@Component
+public class TableDisplayMapper {
+
+    private final ObjectMapper objectMapper;
+
+    public <T> String display(List<T> data,  String... headers) {
+        if (data == null || data.isEmpty()) {
+            return "No data to display.";
+        }
+
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for (Object item : data) {
+            dataList.add(objectMapper.convertValue(item, new TypeReference<>() {
+            }));
+        }
+
+        return displayTable(dataList, headers);
     }
 
-    static String displayTable(List<Map<String, Object>> data, String... headers) {
+    private static String displayTable(List<Map<String, Object>> data, String... headers) {
         StringBuilder builder = new StringBuilder();
         if (data == null || data.isEmpty()) {
             builder.append("No data to display.");

@@ -4,7 +4,7 @@
 package com.tech.employee.jooq.generated.tables;
 
 
-import com.tech.employee.infrastructure.InstantConverter;
+import com.tech.shared.infrastructure.InstantConverter;
 import com.tech.employee.jooq.generated.Indexes;
 import com.tech.employee.jooq.generated.JEms;
 import com.tech.employee.jooq.generated.Keys;

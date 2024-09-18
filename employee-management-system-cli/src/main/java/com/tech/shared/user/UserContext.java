@@ -1,4 +1,4 @@
-package com.tech.employee.exposition.user;
+package com.tech.shared.user;
 
 import lombok.experimental.UtilityClass;
 
