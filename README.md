@@ -37,7 +37,9 @@ Business Requirements :
 
 #### 1. Categories
 
-Each TimeOff request must have an associated category. Admins can create new TimeOff categories.
+Each TimeOff request must have an associated category.
+
+Admins can create new TimeOff categories.
 
    Categories can be of two types:
 
