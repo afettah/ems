@@ -18,14 +18,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TimeOffServiceTest {
@@ -46,8 +46,9 @@ class TimeOffServiceTest {
     void request_should_create_requested_timeoff() {
         //given
         TimeOffRequest timeOffRequest = TimeOffFixtures.timeOffRequest();
-        mockCategory(timeOffRequest.categoryId());
+        TimeOffCategory category = mockCategory(timeOffRequest.categoryId());
         mockEmployee(timeOffRequest.employeeId());
+        when(timeOffRepository.findOverlappingDateRange(timeOffRequest.dateRange())).thenReturn(Collections.emptyList());
 
         //when
         TimeOff timeOff = timeOffService.request(timeOffRequest);
@@ -55,9 +56,10 @@ class TimeOffServiceTest {
         //then
         assertThat(timeOff.getId()).isNotNull();
         assertThat(timeOff)
-                .extracting(TimeOff::getEmployeeId, TimeOff::getCategoryId, TimeOff::getDateRange, TimeOff::getComment, TimeOff::getStatus)
-                .containsExactly(timeOffRequest.employeeId(), timeOffRequest.categoryId(), timeOffRequest.dateRange(), timeOffRequest.comment(), TimeOff.TimeOffStatus.REQUESTED);
+                .extracting(TimeOff::getEmployeeId, TimeOff::getCategory, TimeOff::getDateRange, TimeOff::getComment, TimeOff::getStatus)
+                .containsExactly(timeOffRequest.employeeId(), category, timeOffRequest.dateRange(), timeOffRequest.comment(), TimeOff.TimeOffStatus.REQUESTED);
         verify(timeOffRepository).create(timeOff);
+        verifyNoMoreInteractions(timeOffRepository);
     }
 
     @ParameterizedTest
@@ -114,13 +116,35 @@ class TimeOffServiceTest {
                 .containsExactly(timeOffRequest.dateRange(), timeOffs);
     }
 
+    @Test
+    void request_should_success_when_existing_timeoff_are_auto_cancellable() {
+        //given
+        TimeOffRequest timeOffRequest = TimeOffFixtures.timeOffRequest();
+        mockCategory(timeOffRequest.categoryId());
+        mockEmployee(timeOffRequest.employeeId());
+        List<TimeOff> timeOffs = List.of(TimeOffFixtures.autoCancellable(timeOffRequest.dateRange()), TimeOffFixtures.autoCancellable(timeOffRequest.dateRange()));
+        mockExistingTimeOff(timeOffRequest.dateRange(), timeOffs);
+
+        //when
+        TimeOff timeOff = timeOffService.request(timeOffRequest);
+
+        //then
+        assertThat(timeOff.getId()).isNotNull();
+        verify(timeOffRepository).create(timeOff);
+        for (TimeOff off : timeOffs) {
+            verify(timeOffRepository).cancel(off.getId());
+        }
+        verifyNoMoreInteractions(timeOffRepository);
+    }
+
     private void mockExistingTimeOff(DateRange dateRange, List<TimeOff> timeOffs) {
         when(timeOffRepository.findOverlappingDateRange(dateRange)).thenReturn(timeOffs);
     }
 
-    private void mockCategory(CategoryId categoryId) {
-        TimeOffCategory category = new TimeOffCategory(categoryId, "Category name", "Category description", true);
+    private TimeOffCategory mockCategory(CategoryId categoryId) {
+        TimeOffCategory category = TimeOffFixtures.category(false);
         when(timeOffCategoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+        return category;
     }
 
     private void mockEmployee(EmployeeId employeeId) {

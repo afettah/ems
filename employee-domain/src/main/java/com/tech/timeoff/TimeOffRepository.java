@@ -6,4 +6,6 @@ public interface TimeOffRepository {
     void create(TimeOff expectedTimeOff);
 
     List<TimeOff> findOverlappingDateRange(DateRange dateRange);
+
+    void cancel(TimeOffId id);
 }

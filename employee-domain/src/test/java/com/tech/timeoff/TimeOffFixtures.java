@@ -2,6 +2,7 @@ package com.tech.timeoff;
 
 import com.tech.employee.domain.EmployeeId;
 import com.tech.timeoff.category.CategoryId;
+import com.tech.timeoff.category.TimeOffCategory;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
@@ -20,7 +21,15 @@ class TimeOffFixtures {
         return new TimeOffRequest(employeeId, categoryId, range, comment);
     }
 
+    public static TimeOffCategory category(boolean autoCancel) {
+        return new TimeOffCategory(CategoryId.generate(), "Category name", "Category description", true, autoCancel);
+    }
+
     public static TimeOff timeOff(DateRange dateRange) {
-        return new TimeOff(TimeOffId.generate(), EmployeeId.generate(), CategoryId.generate(), dateRange, "Time off comment", TimeOff.TimeOffStatus.REQUESTED);
+        return new TimeOff(TimeOffId.generate(), EmployeeId.generate(), category(false), dateRange, "Time off comment", TimeOff.TimeOffStatus.REQUESTED);
+    }
+
+    public static TimeOff autoCancellable(DateRange dateRange) {
+        return new TimeOff(TimeOffId.generate(), EmployeeId.generate(), category(true), dateRange, "Auto cancellable time off comment", TimeOff.TimeOffStatus.REQUESTED);
     }
 }

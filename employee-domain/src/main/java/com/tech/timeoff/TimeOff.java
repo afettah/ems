@@ -1,7 +1,7 @@
 package com.tech.timeoff;
 
 import com.tech.employee.domain.EmployeeId;
-import com.tech.timeoff.category.CategoryId;
+import com.tech.timeoff.category.TimeOffCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,12 +12,12 @@ import java.util.Objects;
 public class TimeOff {
     private final TimeOffId id;
     private final EmployeeId employeeId;
-    private final CategoryId categoryId;
+    private final TimeOffCategory category;
     private final DateRange dateRange;
     private final String comment;
     private TimeOffStatus status;
 
-    public static TimeOff create(TimeOffRequest timeOffRequest) {
+    public static TimeOff create(TimeOffRequest timeOffRequest, TimeOffCategory category) {
         Objects.requireNonNull(timeOffRequest, "Time off request cannot be null");
 
         if (timeOffRequest.employeeId() == null) {
@@ -30,7 +30,11 @@ public class TimeOff {
             throw new IllegalArgumentException("dateRange cannot be null");
         }
 
-        return new TimeOff(TimeOffId.generate(), timeOffRequest.employeeId(), timeOffRequest.categoryId(), timeOffRequest.dateRange(), timeOffRequest.comment(), TimeOffStatus.REQUESTED);
+        return new TimeOff(TimeOffId.generate(), timeOffRequest.employeeId(), category, timeOffRequest.dateRange(), timeOffRequest.comment(), TimeOffStatus.REQUESTED);
+    }
+
+    public boolean isAutoCancellable() {
+        return category.autoCancellable();
     }
 
     enum TimeOffStatus {

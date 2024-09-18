@@ -1,6 +1,7 @@
 package com.tech.timeoff;
 
 import com.tech.employee.domain.EmployeeRepository;
+import com.tech.timeoff.category.TimeOffCategory;
 import com.tech.timeoff.category.TimeOffCategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -15,18 +16,35 @@ public class TimeOffService {
 
     @Transactional
     public TimeOff request(TimeOffRequest timeOffRequest) {
-        timeOffCategoryRepository.findById(timeOffRequest.categoryId())
+        TimeOffCategory category = timeOffCategoryRepository.findById(timeOffRequest.categoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(timeOffRequest.categoryId().toString()));
 
         employeeRepository.findById(timeOffRequest.employeeId())
                 .orElseThrow(() -> new EmployeeNotFoundException(timeOffRequest.employeeId().toString()));
 
         List<TimeOff> timeOffList = timeOffRepository.findOverlappingDateRange(timeOffRequest.dateRange());
-        if (!timeOffList.isEmpty()) {
-            throw new OverlappingTimeOffException(timeOffRequest.dateRange(), timeOffList);
+        List<TimeOff> notCancellable = timeOffList.stream()
+                .filter(timeOff -> !timeOff.isAutoCancellable())
+                .toList();
+        if (!notCancellable.isEmpty()) {
+            throw new OverlappingTimeOffException(timeOffRequest.dateRange(), notCancellable);
         }
-        TimeOff timeOff = TimeOff.create(timeOffRequest);
+        TimeOff timeOff = TimeOff.create(timeOffRequest, category);
         timeOffRepository.create(timeOff);
+
+        if (!timeOffList.isEmpty()) {
+            cancel(timeOffList);
+        }
         return timeOff;
+    }
+
+    private void cancel(List<TimeOff> timeOffList) {
+        for (TimeOff timeOff : timeOffList) {
+            cancel(timeOff);
+        }
+    }
+
+    private void cancel(TimeOff timeOff) {
+        timeOffRepository.cancel(timeOff.getId());
     }
 }

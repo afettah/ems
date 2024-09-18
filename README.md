@@ -43,13 +43,13 @@ Admins can create new TimeOff categories.
 
    Categories can be of two types:
 
-- **Exclusive**: Categories marked as "Exclusive" do not allow other categories to be requested for the same period. Overlapping date ranges are not allowed. (e.g. Annual leave).
+- **Not Auto cancel**: Categories marked as "not auto cancel" do not allow other categories to be requested for the same period. (e.g. Annual leave).
 
-- **Permissive**: Categories marked as "Permissive" allow other categories to be requested for the same period. Overlapping requests are allowed. (Work Remotely).
+- **Auto cancel**: Categories marked as "autoCancel allow other categories to be requested for the same period. The existing requests will be canceled. (Work Remotely).
 
 #### 2. Overlapping Requests
 
-The general rule is that two categories cannot be requested for the same period unless at least one of the categories is marked as "Permissive".
+The general rule is that two categories cannot be requested for the same period;
 
 For example, you can have Work Remotely applicable and you want to request Annual leave.
 
@@ -66,7 +66,7 @@ Valid scenarios include:
 - All existing requests (active or inactive) are outside the requested period.
 - Only inactive requests (e.g., canceled or rejected) exist for the same period.
 
-   If the only existing requests for the same period are "Permissive," the new request is allowed, but those permissive requests will be automatically canceled.
+   If the only existing requests for the same period are "auto cancel," the new request is allowed, but those requests will be automatically canceled.
 
 #### 5. TimeOff Request Statuses (Out of Scope):
 
