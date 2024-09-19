@@ -1,8 +1,8 @@
 package com.tech.ems.preferences.cli;
 
 import com.tech.ems.shared.cli.TableDisplayMapper;
-import com.tech.ems.shared.user.User;
-import com.tech.ems.shared.user.UserContext;
+import com.tech.ems.user.User;
+import com.tech.ems.user.UserContext;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.LocaleUtils;

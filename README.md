@@ -3,22 +3,22 @@
 
 ## Description
 
-This is a simple Employee Database Management System. It is a console application that allows users to add, view, update, and delete employees from a database.
-This project is written in java.
+This is a simple Employee Database Management System. It is a console application that allows to manage employees and time off requests.
+
+![EMS](./ems.gif)
+
 
 ## Getting Started
 
-## Run Modes
+### Dependencies
+* Java 21+
+* Maven 3.6.3+
+* Docker (optional)
+
+### Run Modes
 
 This project supports two modes: **H2 (in-memory)** mode and **PostgreSQL** mode. You can easily switch between them using Spring profiles depending on your needs.
 
-### H2 Mode
-In **H2 mode**, the application uses an in-memory H2 database, which is ideal for rapid development and testing. The H2 database is embedded and non-persistent, so all data is lost when the application is stopped. This mode is useful for scenarios where you don't need permanent data storage.
-
-### PostgreSQL Mode
-In **PostgreSQL mode**, the application runs with a PostgreSQL database container using Docker. This mode provides a more realistic setup for development environments that simulate production. Keep in mind that the `docker-compose.yml` provided is designed for development only and does not persist data.
-
-### Switching Between Modes
 You can specify which mode to run by using Spring profiles:
 
 - To run the application in **H2 mode**, use the `h2` profile:
@@ -31,13 +31,12 @@ You can specify which mode to run by using Spring profiles:
     docker-compose up -d && SPRING_PROFILES_ACTIVE=postgres ./mvnw -pl employee-management-system-cli spring-boot:run -DskipTests
     ```
 
-## Jooq
+## Project Structure
 
-### jOOQ generation
-```bash
+The project is divided into the following modules:
 
-mvn clean compile -DskipTests -Pjooq-gen
-```
+- **employee-domain**: Contains the domain model and business logic.
+- **employee-management-system-cli**: Spring Boot implementation that uses the domain model to expose a CLI interface. We find also the implementation domain dependencies.
 
 ## Business logic
 
@@ -45,13 +44,15 @@ mvn clean compile -DskipTests -Pjooq-gen
 
 I made some improvements to the Employee domain model to enhance scalability and support for internationalization:
 
+- Position as entity: The Position is now an entity with a code and a name.
+- Support i18n translations: The Position name can be translated into multiple languages.
 - Salary as Money: The salary is represented using a Money type to accommodate different currencies.
 - Salary with SalaryComponent list: The salary is defined class containing a list of salary components. This demonstrates how different salary elements can be structured.
 - FixedSalaryComponent: A concrete implementation of a SalaryComponent, which includes a PaymentRate and a PaymentSchedule.
 
 These improvements are just examples of how the domain can be optimized.
 
-In a real-world scenario, the design should be refined in collaboration with the Product team to ensure all the requirements for a complex domain like salary management are met.
+In a real-world scenario, the design should be refined in collaboration with the Product team to ensure all the requirements for a complex domain like employee management are met.
 
 
 ### Time Off
@@ -64,7 +65,7 @@ Each TimeOff request must have an associated category.
 
 Admins can create new TimeOff categories.
 
-   Categories can be of two types:
+Categories can be of two types:
 
 - **Not Auto cancel**: Categories marked as "not auto cancel" do not allow other categories to be requested for the same period. (e.g. Annual leave).
 
@@ -74,11 +75,12 @@ Admins can create new TimeOff categories.
 
 The general rule is that two categories cannot be requested for the same period;
 
+There are exceptions to this rule for auto cancel categories:
 For example, you can have Work Remotely applicable and you want to request Annual leave.
 
 #### 3. Same Period Rules
 
-   Two categories are considered to be in the same period if their requested date ranges overlap.
+Two categories are considered to be in the same period if their requested date ranges overlap.
 
 #### 4. TimeOff Request Validation:
 
@@ -89,19 +91,32 @@ Valid scenarios include:
 - All existing requests (active or inactive) are outside the requested period.
 - Only inactive requests (e.g., canceled or rejected) exist for the same period.
 
-   If the only existing requests for the same period are "auto cancel," the new request is allowed, but those requests will be automatically canceled.
+  If the only existing requests for the same period are "auto cancel," the new request is allowed, but those requests will be automatically canceled.
 
 #### 5. TimeOff Request Statuses (Out of Scope):
 
 TimeOff requests can have the following statuses:
- - **REQUESTED** (active): The request is pending approval.
- - **APPROVED** (active): The request has been approved.
- - **REJECTED** (inactive): The request was rejected.
- - **CANCELLED** (inactive): The request was canceled.
+- **REQUESTED** (active): The request is pending approval.
+- **APPROVED** (active): The request has been approved.
+- **REJECTED** (inactive): The request was rejected.
+- **CANCELLED** (inactive): The request was canceled.
 
 #### 5. Balance (Out of Scope):
 
-The balance aspect of the TimeOff system is outside the scope of this specification.
 
 
-## Dependencies
+## Development
+
+### jOOQ generation
+In this project we use [JOOQ](https://www.jooq.org/) to generate the database access layer.
+
+When modifying the database schema, you should : 
+
+1. Add migration scripts to the `src/main/resources/db/migration` folder.
+2. Run the application so flyway can apply the migration scripts.
+3. Run the following command to regenerate the jOOQ classes.
+4. The jOOQ classes will be generated in the `employee-management-system-cli/src/generated` folder.
+```bash
+
+mvn clean compile -DskipTests -Pjooq-gen
+```

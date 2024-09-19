@@ -10,3 +10,6 @@ spring:
     schemas: ems
     placeholders:
       jsonType: JSONB
+logging:
+  level:
+    root: off

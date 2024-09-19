@@ -1,4 +1,4 @@
-package com.tech.ems.shared.user;
+package com.tech.ems.user;
 
 import lombok.Data;
 

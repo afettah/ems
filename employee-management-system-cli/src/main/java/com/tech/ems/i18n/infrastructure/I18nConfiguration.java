@@ -1,4 +1,4 @@
-package com.tech.ems.shared.infrastructure;
+package com.tech.ems.i18n.infrastructure;
 
 import com.tech.ems.i18n.I18nMessageRepository;
 import com.tech.ems.i18n.I18nMessageService;

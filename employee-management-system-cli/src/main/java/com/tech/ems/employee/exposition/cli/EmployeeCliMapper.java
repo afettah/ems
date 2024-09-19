@@ -5,7 +5,7 @@ import com.tech.ems.employee.EmployeeId;
 import com.tech.ems.employee.salary.Salary;
 import com.tech.ems.i18n.I18nMessageService;
 import com.tech.ems.shared.cli.TableDisplayMapper;
-import com.tech.ems.shared.user.UserContext;
+import com.tech.ems.user.UserContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
