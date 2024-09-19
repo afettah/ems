@@ -1,11 +1,13 @@
 spring:
   main:
     banner-mode: off
-    web-application-type: none
   shell:
     interactive:
       enabled: true
   flyway:
     schemas: ems
     placeholders:
-      jsonType: JSONB
+      jsonType: TEXT
+logging:
+  level:
+    root: off

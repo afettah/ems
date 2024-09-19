@@ -22,7 +22,7 @@ class EmployeeManagementCommands {
     private final EmployeeService employeeService;
     private final EmployeeCliMapper employeeCliMapper;
 
-    @ShellMethod(key = "create", value = "Create a new employee")
+    @ShellMethod(key = "employees create", value = "Create a new employee")
     public String createEmployee(@ShellOption(help = "employee email") String email, @ShellOption(help = "employee name") String name, @ShellOption(help = "employee position") String position, @ShellOption(help = "employee monthly base salary in euro") double salary) {
         try {
             var employeeCreateCommand = new EmployeeCreateCommand(email, name, position, Salary.fixedMonthlySalary(Money.euro(salary)));
@@ -33,7 +33,7 @@ class EmployeeManagementCommands {
         }
     }
 
-    @ShellMethod(key = "list", value = "List all employees")
+    @ShellMethod(key = {"employees", "employees list"}, value = "List all employees")
     public String listAllEmployees() {
         List<Employee> employees = employeeService.findAll();
         if (employees.isEmpty()) {
@@ -42,7 +42,7 @@ class EmployeeManagementCommands {
         return employeeCliMapper.mapToTableString(employees);
     }
 
-    @ShellMethod(key = "find", value = "Find an employee")
+    @ShellMethod(key = "employees find", value = "Find an employee")
     public String findEmployee(
             @ShellOption(defaultValue = ShellOption.NULL) String id,
             @ShellOption(defaultValue = ShellOption.NULL) String name,
@@ -55,7 +55,7 @@ class EmployeeManagementCommands {
         return employeeCliMapper.mapToTableString(employees);
     }
 
-    @ShellMethod(key = "delete", value = "Delete an employee by ID")
+    @ShellMethod(key = "employees delete", value = "Delete an employee by ID")
     public String deleteEmployee(String id) {
         try {
             employeeService.delete(employeeCliMapper.mapToEmployeeId(id));
@@ -65,7 +65,7 @@ class EmployeeManagementCommands {
         }
     }
 
-    @ShellMethod(key = "update", value = "Update an employee's details")
+    @ShellMethod(key = "employees update", value = "Update an employee's details")
     public String updateEmployee(String id, String position, Double salary) {
         try {
             employeeService.update(employeeCliMapper.mapToEmployeeId(id), new EmployeeUpdateCommand(position, salary != null ? Salary.fixedMonthlySalary(Money.euro(salary)) : null));
@@ -75,7 +75,7 @@ class EmployeeManagementCommands {
         }
     }
 
-    @ShellMethod(key = "generate", value = "Generate a number of employees. Usage: generate <count> <threadCount>")
+    @ShellMethod(key = "employees generate", value = "Generate a number of employees. Usage: generate <count> <threadCount>")
     public String generateEmployees(@ShellOption(help = "employee count") Integer employeeCount, @ShellOption(defaultValue = "1", help = "threadCount") Integer threadCountValue) throws InterruptedException {
 
         AtomicInteger successCount = new AtomicInteger();
