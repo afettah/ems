@@ -6,7 +6,7 @@ package com.tech.employee.jooq.generated.tables;
 
 import com.tech.employee.jooq.generated.JEms;
 import com.tech.employee.jooq.generated.Keys;
-import com.tech.employee.jooq.generated.tables.JEmployees.JEmployeesPath;
+import com.tech.employee.jooq.generated.tables.JEmployee.JEmployeePath;
 import com.tech.employee.jooq.generated.tables.JTimeoffCategory.JTimeoffCategoryPath;
 import com.tech.employee.jooq.generated.tables.records.JEmployeeTimeoffRecord;
 import com.tech.shared.infrastructure.InstantConverter;
@@ -196,16 +196,16 @@ public class JEmployeeTimeoff extends TableImpl<JEmployeeTimeoffRecord> {
         return _timeoffCategory;
     }
 
-    private transient JEmployeesPath _employees;
+    private transient JEmployeePath _employee;
 
     /**
-     * Get the implicit join path to the <code>ems.employees</code> table.
+     * Get the implicit join path to the <code>ems.employee</code> table.
      */
-    public JEmployeesPath employees() {
-        if (_employees == null)
-            _employees = new JEmployeesPath(this, Keys.EMPLOYEE_TIMEOFF__EMPLOYEE_TIMEOFF_EMPLOYEE_ID_FKEY, null);
+    public JEmployeePath employee() {
+        if (_employee == null)
+            _employee = new JEmployeePath(this, Keys.EMPLOYEE_TIMEOFF__EMPLOYEE_TIMEOFF_EMPLOYEE_ID_FKEY, null);
 
-        return _employees;
+        return _employee;
     }
 
     @Override

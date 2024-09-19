@@ -4,9 +4,9 @@
 package com.tech.employee.jooq.generated;
 
 
+import com.tech.employee.jooq.generated.tables.JEmployee;
 import com.tech.employee.jooq.generated.tables.JEmployeeHistory;
 import com.tech.employee.jooq.generated.tables.JEmployeeTimeoff;
-import com.tech.employee.jooq.generated.tables.JEmployees;
 import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
 import com.tech.employee.jooq.generated.tables.JTimeoffCategory;
 
@@ -32,6 +32,11 @@ public class JEms extends SchemaImpl {
     public static final JEms EMS = new JEms();
 
     /**
+     * The table <code>ems.employee</code>.
+     */
+    public final JEmployee EMPLOYEE = JEmployee.EMPLOYEE;
+
+    /**
      * The table <code>ems.employee_history</code>.
      */
     public final JEmployeeHistory EMPLOYEE_HISTORY = JEmployeeHistory.EMPLOYEE_HISTORY;
@@ -40,11 +45,6 @@ public class JEms extends SchemaImpl {
      * The table <code>ems.employee_timeoff</code>.
      */
     public final JEmployeeTimeoff EMPLOYEE_TIMEOFF = JEmployeeTimeoff.EMPLOYEE_TIMEOFF;
-
-    /**
-     * The table <code>ems.employees</code>.
-     */
-    public final JEmployees EMPLOYEES = JEmployees.EMPLOYEES;
 
     /**
      * The table <code>ems.flyway_schema_history</code>.
@@ -72,9 +72,9 @@ public class JEms extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            JEmployee.EMPLOYEE,
             JEmployeeHistory.EMPLOYEE_HISTORY,
             JEmployeeTimeoff.EMPLOYEE_TIMEOFF,
-            JEmployees.EMPLOYEES,
             JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             JTimeoffCategory.TIMEOFF_CATEGORY
         );

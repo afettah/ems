@@ -13,7 +13,7 @@ create table ems.employee_timeoff
 
 alter table ems.employee_timeoff
     add constraint employee_timeoff_employee_id_fkey
-        foreign key (employee_id) references ems.employees (id);
+        foreign key (employee_id) references ems.employee (id);
 alter table ems.employee_timeoff
     add constraint employee_timeoff_category_fkey
         foreign key (category_id) references ems.timeoff_category (id);

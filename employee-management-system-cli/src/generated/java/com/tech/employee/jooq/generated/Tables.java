@@ -4,9 +4,9 @@
 package com.tech.employee.jooq.generated;
 
 
+import com.tech.employee.jooq.generated.tables.JEmployee;
 import com.tech.employee.jooq.generated.tables.JEmployeeHistory;
 import com.tech.employee.jooq.generated.tables.JEmployeeTimeoff;
-import com.tech.employee.jooq.generated.tables.JEmployees;
 import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
 import com.tech.employee.jooq.generated.tables.JTimeoffCategory;
 
@@ -18,6 +18,11 @@ import com.tech.employee.jooq.generated.tables.JTimeoffCategory;
 public class Tables {
 
     /**
+     * The table <code>ems.employee</code>.
+     */
+    public static final JEmployee EMPLOYEE = JEmployee.EMPLOYEE;
+
+    /**
      * The table <code>ems.employee_history</code>.
      */
     public static final JEmployeeHistory EMPLOYEE_HISTORY = JEmployeeHistory.EMPLOYEE_HISTORY;
@@ -26,11 +31,6 @@ public class Tables {
      * The table <code>ems.employee_timeoff</code>.
      */
     public static final JEmployeeTimeoff EMPLOYEE_TIMEOFF = JEmployeeTimeoff.EMPLOYEE_TIMEOFF;
-
-    /**
-     * The table <code>ems.employees</code>.
-     */
-    public static final JEmployees EMPLOYEES = JEmployees.EMPLOYEES;
 
     /**
      * The table <code>ems.flyway_schema_history</code>.

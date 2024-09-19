@@ -1,4 +1,4 @@
-create table ems.employees
+create table ems.employee
 (
     id         uuid                     not null primary key,
     email      text                     not null,
