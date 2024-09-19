@@ -143,13 +143,13 @@
 							<forcedTypes>
 								<forcedType>
 									<userType>java.time.Instant</userType>
-									<converter>com.tech.shared.infrastructure.InstantConverter</converter>
+									<converter>com.tech.ems.shared.infrastructure.InstantConverter</converter>
 									<includeTypes>timestamp\swith\stime\szone</includeTypes>
 								</forcedType>
 							</forcedTypes>
 						</database>
 						<target>
-							<packageName>com.tech.employee.jooq.generated</packageName>
+							<packageName>com.tech.ems.jooq.generated</packageName>
 							<directory>src/generated/java</directory>
 						</target>
 					</generator>
@@ -183,7 +183,7 @@
 							<goal>repackage</goal>
 						</goals>
 						<configuration>
-							<mainClass>com.tech.EMSApplication</mainClass>
+							<mainClass>com.tech.ems.EMSApplication</mainClass>
 						</configuration>
 					</execution>
 				</executions>
