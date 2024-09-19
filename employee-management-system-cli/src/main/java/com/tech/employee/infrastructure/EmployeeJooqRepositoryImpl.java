@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +28,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
                 .set(EMPLOYEES.EMAIL, employee.getEmail())
                 .set(EMPLOYEES.POSITION, employee.getPosition())
                 .set(EMPLOYEES.SALARY, JsonbMapper.mapToJsonb(employee.getSalary()))
-                .set(EMPLOYEES.CREATED_AT, employee.getCreatedAt())
-                .set(EMPLOYEES.UPDATED_AT, employee.getUpdatedAt())
+                .set(EMPLOYEES.CREATED_AT, Instant.now())
                 .execute();
     }
 
@@ -39,8 +39,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
                 .set(EMPLOYEES.EMAIL, employee.getEmail())
                 .set(EMPLOYEES.POSITION, employee.getPosition())
                 .set(EMPLOYEES.SALARY, JsonbMapper.mapToJsonb(employee.getSalary()))
-                .set(EMPLOYEES.CREATED_AT, employee.getCreatedAt())
-                .set(EMPLOYEES.UPDATED_AT, employee.getUpdatedAt())
+                .set(EMPLOYEES.UPDATED_AT, Instant.now())
                 .where(EMPLOYEES.ID.eq(employee.getId().uuid()))
                 .execute();
         if (updated == 0) {

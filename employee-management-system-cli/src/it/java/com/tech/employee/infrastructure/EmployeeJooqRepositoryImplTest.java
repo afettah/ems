@@ -37,8 +37,10 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
             //then
             assertThat(actualEmployee)
                     .isEqualTo(expectedEmployee)
-                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary, Employee::getCreatedAt, Employee::getUpdatedAt)
-                    .containsExactly(expectedEmployee.getId(), expectedEmployee.getEmail(), expectedEmployee.getName(), expectedEmployee.getPosition(), expectedEmployee.getSalary(), expectedEmployee.getCreatedAt(), expectedEmployee.getUpdatedAt());
+                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary)
+                    .containsExactly(expectedEmployee.getId(), expectedEmployee.getEmail(), expectedEmployee.getName(), expectedEmployee.getPosition(), expectedEmployee.getSalary());
+            assertThat(actualEmployee.getCreatedAt()).isNotNull();
+            assertThat(actualEmployee.getUpdatedAt()).isNull();
         }
 
         @Test
@@ -61,7 +63,7 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
             //given
             Employee employee = EmployeeFixtures.generate();
             employeeJooqRepositoryImpl.create(employee);
-            Employee updatedEmployee = new Employee(employee.getId(), "new-email@domai.com", "new-name", "new-position", Salary.fixedMonthlySalary(Money.euro(1)), Instant.now(), Instant.now());
+            Employee updatedEmployee = new Employee(employee.getId(), "new-email@domai.com", "new-name", "new-position", Salary.fixedMonthlySalary(Money.euro(1)), null, null);
 
             //when
             employeeJooqRepositoryImpl.update(updatedEmployee);
@@ -70,8 +72,10 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
             //then
             assertThat(actualEmployee)
                     .isEqualTo(updatedEmployee)
-                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary, Employee::getCreatedAt, Employee::getUpdatedAt)
-                    .containsExactly(updatedEmployee.getId(), updatedEmployee.getEmail(), updatedEmployee.getName(), updatedEmployee.getPosition(), updatedEmployee.getSalary(), updatedEmployee.getCreatedAt(), updatedEmployee.getUpdatedAt());
+                    .extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary)
+                    .containsExactly(updatedEmployee.getId(), updatedEmployee.getEmail(), updatedEmployee.getName(), updatedEmployee.getPosition(), updatedEmployee.getSalary());
+            assertThat(actualEmployee.getCreatedAt()).isNotNull();
+            assertThat(actualEmployee.getUpdatedAt()).isNotNull();
         }
 
         @Test

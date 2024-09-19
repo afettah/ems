@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    default: h2
   main:
     banner-mode: off
   shell:
@@ -7,7 +9,7 @@ spring:
   flyway:
     schemas: ems
     placeholders:
-      jsonType: TEXT
+      jsonType: JSONB
 logging:
   level:
     root: off

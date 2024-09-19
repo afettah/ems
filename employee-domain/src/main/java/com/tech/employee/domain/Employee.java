@@ -16,7 +16,7 @@ public class Employee {
     private String position;
     private Salary salary;
     private final Instant createdAt;
-    private Instant updatedAt;
+    private final Instant updatedAt;
 
     public Employee(EmployeeId id, String email, String name, String position, Salary salary, Instant createdAt, Instant updatedAt) {
         Objects.requireNonNull(id, "Employee id cannot be null");
@@ -24,7 +24,6 @@ public class Employee {
         Objects.requireNonNull(name, "Employee name cannot be null");
         Objects.requireNonNull(position, "Employee position cannot be null");
         Objects.requireNonNull(salary, "Employee salary cannot be null");
-        Objects.requireNonNull(createdAt, "Employee createdAt cannot be null");
         if (!EmailValidator.isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid email format");
         }
@@ -39,7 +38,7 @@ public class Employee {
     }
 
     public static Employee create(EmployeeCreateCommand command) {
-        return new Employee(EmployeeId.generate(), command.email(), command.name(), command.position(), command.salary(), Instant.now(), null);
+        return new Employee(EmployeeId.generate(), command.email(), command.name(), command.position(), command.salary(), null, null);
     }
 
     public void update(EmployeeUpdateCommand employeeCommand) {
@@ -50,13 +49,11 @@ public class Employee {
     public void updateSalary(Salary salary) {
         Objects.requireNonNull(salary, "Employee salary cannot be null");
         this.salary = salary;
-        this.updatedAt = Instant.now();
     }
 
     public void updatePosition(String position) {
         Objects.requireNonNull(position, "Employee position cannot be null");
         this.position = position;
-        this.updatedAt = Instant.now();
     }
 
     @Override

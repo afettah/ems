@@ -32,7 +32,7 @@ class EmployeeTest {
             //then
             assertThat(employee).extracting(Employee::getId, Employee::getEmail, Employee::getName, Employee::getPosition, Employee::getSalary)
                     .containsExactly(employee.getId(), email, name, position, salary);
-            assertThat(employee.getCreatedAt()).isNotNull();
+            assertThat(employee.getCreatedAt()).isNull();
             assertThat(employee.getUpdatedAt()).isNull();
         }
 
@@ -95,7 +95,6 @@ class EmployeeTest {
 
             //then
             assertThat(employee.getSalary()).isEqualTo(newSalary);
-            assertThat(employee.getUpdatedAt()).isNotNull();
         }
 
         @Test
@@ -109,7 +108,6 @@ class EmployeeTest {
 
             //then
             assertThat(employee.getPosition()).isEqualTo(newPosition);
-            assertThat(employee.getUpdatedAt()).isNotNull();
         }
 
         @Test
@@ -126,7 +124,6 @@ class EmployeeTest {
             //then
             assertThat(employee.getPosition()).isEqualTo(updatePosition);
             assertThat(employee.getSalary()).isEqualTo(updateSalary);
-            assertThat(employee.getUpdatedAt()).isNotNull();
         }
 
         @Test
