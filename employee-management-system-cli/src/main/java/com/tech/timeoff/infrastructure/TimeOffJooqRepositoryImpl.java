@@ -1,9 +1,10 @@
 package com.tech.timeoff.infrastructure;
 
-import com.tech.timeoff.DateRange;
-import com.tech.timeoff.TimeOff;
-import com.tech.timeoff.TimeOffId;
-import com.tech.timeoff.TimeOffRepository;
+import com.tech.employee.domain.EmployeeId;
+import com.tech.employee.jooq.generated.tables.records.JEmployeeTimeoffRecord;
+import com.tech.timeoff.*;
+import com.tech.timeoff.category.CategoryId;
+import com.tech.timeoff.category.TimeOffCategoryRepository;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 
@@ -15,6 +16,7 @@ import static com.tech.employee.jooq.generated.Tables.EMPLOYEE_TIMEOFF;
 @AllArgsConstructor
 class TimeOffJooqRepositoryImpl implements TimeOffRepository {
     private final DSLContext dslContext;
+    private final TimeOffCategoryRepository timeOffCategoryRepository;
 
     @Override
     public void create(TimeOff expectedTimeOff) {
@@ -31,11 +33,13 @@ class TimeOffJooqRepositoryImpl implements TimeOffRepository {
     }
 
     @Override
-    public List<TimeOff> findOverlappingDateRange(DateRange dateRange) {
+    public List<TimeOff> findOverlappingDateRange(EmployeeId employeeId, DateRange dateRange) {
         return dslContext.selectFrom(EMPLOYEE_TIMEOFF)
-                .where(EMPLOYEE_TIMEOFF.START_DATE.between(dateRange.start(), dateRange.end())
-                        .or(EMPLOYEE_TIMEOFF.END_DATE.between(dateRange.start(), dateRange.end())))
-                .fetchInto(TimeOff.class);
+                .where(EMPLOYEE_TIMEOFF.EMPLOYEE_ID.eq(employeeId.uuid())
+                        .and(EMPLOYEE_TIMEOFF.START_DATE
+                                .between(dateRange.start(), dateRange.end())
+                                .or(EMPLOYEE_TIMEOFF.END_DATE.between(dateRange.start(), dateRange.end()))))
+                .fetch(this::mapTimeOff);
     }
 
     @Override
@@ -45,4 +49,23 @@ class TimeOffJooqRepositoryImpl implements TimeOffRepository {
                 .where(EMPLOYEE_TIMEOFF.ID.eq(id.uuid()))
                 .execute();
     }
+
+    @Override
+    public List<TimeOff> findAll(TimeOffFilter timeOffFilter) {
+        var query = dslContext.selectFrom(EMPLOYEE_TIMEOFF);
+        timeOffFilter.getEmployeeId().ifPresent(employeeId -> query.where(EMPLOYEE_TIMEOFF.EMPLOYEE_ID.eq(employeeId.uuid())));
+        return query.fetch(this::mapTimeOff);
+    }
+
+    private TimeOff mapTimeOff(JEmployeeTimeoffRecord jEmployeeTimeoffRecord) {
+        return new TimeOff(
+                new TimeOffId(jEmployeeTimeoffRecord.getId()),
+                new EmployeeId(jEmployeeTimeoffRecord.getEmployeeId()),
+                timeOffCategoryRepository.findById(new CategoryId(jEmployeeTimeoffRecord.getCategoryId())).orElseThrow(),
+                new DateRange(jEmployeeTimeoffRecord.getStartDate(), jEmployeeTimeoffRecord.getEndDate()),
+                jEmployeeTimeoffRecord.getComment(),
+                TimeOff.TimeOffStatus.valueOf(jEmployeeTimeoffRecord.getStatus())
+        );
+    }
+
 }

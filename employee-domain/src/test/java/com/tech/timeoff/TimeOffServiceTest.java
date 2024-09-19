@@ -48,7 +48,7 @@ class TimeOffServiceTest {
         TimeOffRequest timeOffRequest = TimeOffFixtures.timeOffRequest();
         TimeOffCategory category = mockCategory(timeOffRequest.categoryId());
         mockEmployee(timeOffRequest.employeeId());
-        when(timeOffRepository.findOverlappingDateRange(timeOffRequest.dateRange())).thenReturn(Collections.emptyList());
+        when(timeOffRepository.findOverlappingDateRange(timeOffRequest.employeeId(), timeOffRequest.dateRange())).thenReturn(Collections.emptyList());
 
         //when
         TimeOff timeOff = timeOffService.request(timeOffRequest);
@@ -107,7 +107,7 @@ class TimeOffServiceTest {
         mockCategory(timeOffRequest.categoryId());
         mockEmployee(timeOffRequest.employeeId());
         List<TimeOff> timeOffs = List.of(TimeOffFixtures.timeOff(timeOffRequest.dateRange()));
-        mockExistingTimeOff(timeOffRequest.dateRange(), timeOffs);
+        mockExistingTimeOff(timeOffRequest.employeeId(), timeOffRequest.dateRange(), timeOffs);
 
         //when
         //then
@@ -123,7 +123,7 @@ class TimeOffServiceTest {
         mockCategory(timeOffRequest.categoryId());
         mockEmployee(timeOffRequest.employeeId());
         List<TimeOff> timeOffs = List.of(TimeOffFixtures.autoCancellable(timeOffRequest.dateRange()), TimeOffFixtures.autoCancellable(timeOffRequest.dateRange()));
-        mockExistingTimeOff(timeOffRequest.dateRange(), timeOffs);
+        mockExistingTimeOff(timeOffRequest.employeeId(), timeOffRequest.dateRange(), timeOffs);
 
         //when
         TimeOff timeOff = timeOffService.request(timeOffRequest);
@@ -137,8 +137,8 @@ class TimeOffServiceTest {
         verifyNoMoreInteractions(timeOffRepository);
     }
 
-    private void mockExistingTimeOff(DateRange dateRange, List<TimeOff> timeOffs) {
-        when(timeOffRepository.findOverlappingDateRange(dateRange)).thenReturn(timeOffs);
+    private void mockExistingTimeOff(EmployeeId employeeId, DateRange dateRange, List<TimeOff> timeOffs) {
+        when(timeOffRepository.findOverlappingDateRange(employeeId, dateRange)).thenReturn(timeOffs);
     }
 
     private TimeOffCategory mockCategory(CategoryId categoryId) {

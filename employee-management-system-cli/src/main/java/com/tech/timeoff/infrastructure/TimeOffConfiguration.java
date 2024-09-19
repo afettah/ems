@@ -25,8 +25,8 @@ class TimeOffConfiguration {
     }
 
     @Bean
-    public TimeOffRepository timeOffRepository(DSLContext dslContext) {
-        return new TimeOffJooqRepositoryImpl(dslContext);
+    public TimeOffRepository timeOffRepository(DSLContext dslContext, TimeOffCategoryRepository timeOffCategoryRepository) {
+        return new TimeOffJooqRepositoryImpl(dslContext, timeOffCategoryRepository);
     }
 
     @Bean

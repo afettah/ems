@@ -4,11 +4,13 @@ import com.tech.employee.domain.EmployeeId;
 import com.tech.timeoff.category.TimeOffCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Objects;
 
 @AllArgsConstructor
 @Getter
+@ToString
 public class TimeOff {
     private final TimeOffId id;
     private final EmployeeId employeeId;

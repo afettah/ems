@@ -22,7 +22,7 @@ public class TimeOffService {
         employeeRepository.findById(timeOffRequest.employeeId())
                 .orElseThrow(() -> new EmployeeNotFoundException(timeOffRequest.employeeId().toString()));
 
-        List<TimeOff> timeOffList = timeOffRepository.findOverlappingDateRange(timeOffRequest.dateRange());
+        List<TimeOff> timeOffList = timeOffRepository.findOverlappingDateRange(timeOffRequest.employeeId(), timeOffRequest.dateRange());
         List<TimeOff> notCancellable = timeOffList.stream()
                 .filter(timeOff -> !timeOff.isAutoCancellable())
                 .toList();
@@ -46,5 +46,9 @@ public class TimeOffService {
 
     private void cancel(TimeOff timeOff) {
         timeOffRepository.cancel(timeOff.getId());
+    }
+
+    public List<TimeOff> findAll(TimeOffFilter timeOffFilter) {
+        return timeOffRepository.findAll(timeOffFilter);
     }
 }
