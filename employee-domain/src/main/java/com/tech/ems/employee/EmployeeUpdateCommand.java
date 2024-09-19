@@ -1,13 +1,14 @@
 package com.tech.ems.employee;
 
+import com.tech.ems.employee.position.Position;
 import com.tech.ems.employee.salary.Salary;
 
 import java.util.Optional;
 
 
-public record EmployeeUpdateCommand(String position, Salary salary) {
+public record EmployeeUpdateCommand(Position position, Salary salary) {
 
-    public Optional<String> getPosition() {
+    public Optional<Position> getPosition() {
         return Optional.ofNullable(position);
     }
 

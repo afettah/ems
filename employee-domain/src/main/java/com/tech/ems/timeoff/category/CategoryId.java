@@ -14,10 +14,6 @@ public record CategoryId(UUID uuid) {
         return new CategoryId(UUID.randomUUID());
     }
 
-    public static CategoryId fromString(String uuid) {
-        return new CategoryId(UUID.fromString(uuid));
-    }
-
     public String id() {
         return uuid.toString();
     }

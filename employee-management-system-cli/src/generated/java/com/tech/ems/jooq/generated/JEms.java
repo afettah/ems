@@ -8,6 +8,8 @@ import com.tech.ems.jooq.generated.tables.JEmployee;
 import com.tech.ems.jooq.generated.tables.JEmployeeHistory;
 import com.tech.ems.jooq.generated.tables.JEmployeeTimeoff;
 import com.tech.ems.jooq.generated.tables.JFlywaySchemaHistory;
+import com.tech.ems.jooq.generated.tables.JI18nMessage;
+import com.tech.ems.jooq.generated.tables.JPosition;
 import com.tech.ems.jooq.generated.tables.JTimeoffCategory;
 
 import java.util.Arrays;
@@ -52,6 +54,16 @@ public class JEms extends SchemaImpl {
     public final JFlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
+     * The table <code>ems.i18n_message</code>.
+     */
+    public final JI18nMessage I18N_MESSAGE = JI18nMessage.I18N_MESSAGE;
+
+    /**
+     * The table <code>ems.position</code>.
+     */
+    public final JPosition POSITION = JPosition.POSITION;
+
+    /**
      * The table <code>ems.timeoff_category</code>.
      */
     public final JTimeoffCategory TIMEOFF_CATEGORY = JTimeoffCategory.TIMEOFF_CATEGORY;
@@ -76,6 +88,8 @@ public class JEms extends SchemaImpl {
             JEmployeeHistory.EMPLOYEE_HISTORY,
             JEmployeeTimeoff.EMPLOYEE_TIMEOFF,
             JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
+            JI18nMessage.I18N_MESSAGE,
+            JPosition.POSITION,
             JTimeoffCategory.TIMEOFF_CATEGORY
         );
     }

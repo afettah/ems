@@ -1,5 +1,6 @@
 package com.tech.ems.employee;
 
+import com.tech.ems.employee.position.Position;
 import com.tech.ems.employee.salary.Salary;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,12 +14,12 @@ public class Employee {
     private final EmployeeId id;
     private final String email;
     private final String name;
-    private String position;
+    private Position position;
     private Salary salary;
     private final Instant createdAt;
     private final Instant updatedAt;
 
-    public Employee(EmployeeId id, String email, String name, String position, Salary salary, Instant createdAt, Instant updatedAt) {
+    public Employee(EmployeeId id, String email, String name, Position position, Salary salary, Instant createdAt, Instant updatedAt) {
         Objects.requireNonNull(id, "Employee id cannot be null");
         Objects.requireNonNull(email, "Employee email cannot be null");
         Objects.requireNonNull(name, "Employee name cannot be null");
@@ -51,7 +52,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    public void updatePosition(String position) {
+    public void updatePosition(Position position) {
         Objects.requireNonNull(position, "Employee position cannot be null");
         this.position = position;
     }

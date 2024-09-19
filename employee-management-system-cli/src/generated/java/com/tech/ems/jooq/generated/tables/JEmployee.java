@@ -8,6 +8,7 @@ import com.tech.ems.jooq.generated.Indexes;
 import com.tech.ems.jooq.generated.JEms;
 import com.tech.ems.jooq.generated.Keys;
 import com.tech.ems.jooq.generated.tables.JEmployeeTimeoff.JEmployeeTimeoffPath;
+import com.tech.ems.jooq.generated.tables.JPosition.JPositionPath;
 import com.tech.ems.jooq.generated.tables.records.JEmployeeRecord;
 import com.tech.ems.shared.infrastructure.InstantConverter;
 
@@ -172,6 +173,23 @@ public class JEmployee extends TableImpl<JEmployeeRecord> {
     @Override
     public UniqueKey<JEmployeeRecord> getPrimaryKey() {
         return Keys.EMPLOYEE_PKEY;
+    }
+
+    @Override
+    public List<ForeignKey<JEmployeeRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.EMPLOYEE__EMPLOYEE_POSITION_CODE_FKEY);
+    }
+
+    private transient JPositionPath _position;
+
+    /**
+     * Get the implicit join path to the <code>ems.position</code> table.
+     */
+    public JPositionPath position() {
+        if (_position == null)
+            _position = new JPositionPath(this, Keys.EMPLOYEE__EMPLOYEE_POSITION_CODE_FKEY, null);
+
+        return _position;
     }
 
     private transient JEmployeeTimeoffPath _employeeTimeoff;

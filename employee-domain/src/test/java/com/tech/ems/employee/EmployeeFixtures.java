@@ -1,8 +1,6 @@
 package com.tech.ems.employee;
 
-import com.tech.ems.employee.Employee;
-import com.tech.ems.employee.EmployeeCreateCommand;
-import com.tech.ems.employee.EmployeeId;
+import com.tech.ems.employee.position.Position;
 import com.tech.ems.employee.salary.Money;
 import com.tech.ems.employee.salary.Salary;
 
@@ -15,7 +13,7 @@ public class EmployeeFixtures {
      * @return always the same employee
      */
     public static Employee johnDoe() {
-        return Employee.create(new EmployeeCreateCommand("john.doe@domain.com", "John Doe", "Software Engineer", Salary.fixedMonthlySalary(Money.euro(50000))));
+        return Employee.create(new EmployeeCreateCommand("john.doe@domain.com", "John Doe", position(), Salary.fixedMonthlySalary(Money.euro(50000))));
     }
 
     public static Employee generate() {
@@ -23,6 +21,14 @@ public class EmployeeFixtures {
     }
 
     public static Employee generate(EmployeeId id) {
-        return new Employee(id,  "email-" + id.id() + "@domain.com", "name" + id.id(), "position" + id, Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
+        return new Employee(id,  "email-" + id.id() + "@domain.com", "name" + id.id(), position("pos" + id), Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
+    }
+
+    public static Position position() {
+        return new Position("position-code", "Position Name");
+    }
+
+    public static Position position(String code) {
+        return new Position(code, "Position" + code);
     }
 }

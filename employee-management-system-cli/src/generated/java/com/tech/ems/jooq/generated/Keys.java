@@ -8,11 +8,15 @@ import com.tech.ems.jooq.generated.tables.JEmployee;
 import com.tech.ems.jooq.generated.tables.JEmployeeHistory;
 import com.tech.ems.jooq.generated.tables.JEmployeeTimeoff;
 import com.tech.ems.jooq.generated.tables.JFlywaySchemaHistory;
+import com.tech.ems.jooq.generated.tables.JI18nMessage;
+import com.tech.ems.jooq.generated.tables.JPosition;
 import com.tech.ems.jooq.generated.tables.JTimeoffCategory;
 import com.tech.ems.jooq.generated.tables.records.JEmployeeHistoryRecord;
 import com.tech.ems.jooq.generated.tables.records.JEmployeeRecord;
 import com.tech.ems.jooq.generated.tables.records.JEmployeeTimeoffRecord;
 import com.tech.ems.jooq.generated.tables.records.JFlywaySchemaHistoryRecord;
+import com.tech.ems.jooq.generated.tables.records.JI18nMessageRecord;
+import com.tech.ems.jooq.generated.tables.records.JPositionRecord;
 import com.tech.ems.jooq.generated.tables.records.JTimeoffCategoryRecord;
 
 import org.jooq.ForeignKey;
@@ -36,12 +40,16 @@ public class Keys {
     public static final UniqueKey<JEmployeeHistoryRecord> EMPLOYEE_HISTORY_PKEY = Internal.createUniqueKey(JEmployeeHistory.EMPLOYEE_HISTORY, DSL.name("employee_history_pkey"), new TableField[] { JEmployeeHistory.EMPLOYEE_HISTORY.ID }, true);
     public static final UniqueKey<JEmployeeTimeoffRecord> EMPLOYEE_TIMEOFF_PKEY = Internal.createUniqueKey(JEmployeeTimeoff.EMPLOYEE_TIMEOFF, DSL.name("employee_timeoff_pkey"), new TableField[] { JEmployeeTimeoff.EMPLOYEE_TIMEOFF.ID }, true);
     public static final UniqueKey<JFlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
+    public static final UniqueKey<JI18nMessageRecord> I18N_MESSAGE_PKEY = Internal.createUniqueKey(JI18nMessage.I18N_MESSAGE, DSL.name("i18n_message_pkey"), new TableField[] { JI18nMessage.I18N_MESSAGE.ID }, true);
+    public static final UniqueKey<JPositionRecord> POSITION_CODE_UNIQUE = Internal.createUniqueKey(JPosition.POSITION, DSL.name("position_code_unique"), new TableField[] { JPosition.POSITION.CODE }, true);
+    public static final UniqueKey<JPositionRecord> POSITION_PKEY = Internal.createUniqueKey(JPosition.POSITION, DSL.name("position_pkey"), new TableField[] { JPosition.POSITION.ID }, true);
     public static final UniqueKey<JTimeoffCategoryRecord> TIMEOFF_CATEGORY_PKEY = Internal.createUniqueKey(JTimeoffCategory.TIMEOFF_CATEGORY, DSL.name("timeoff_category_pkey"), new TableField[] { JTimeoffCategory.TIMEOFF_CATEGORY.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<JEmployeeRecord, JPositionRecord> EMPLOYEE__EMPLOYEE_POSITION_CODE_FKEY = Internal.createForeignKey(JEmployee.EMPLOYEE, DSL.name("employee_position_code_fkey"), new TableField[] { JEmployee.EMPLOYEE.POSITION }, Keys.POSITION_CODE_UNIQUE, new TableField[] { JPosition.POSITION.CODE }, true);
     public static final ForeignKey<JEmployeeTimeoffRecord, JTimeoffCategoryRecord> EMPLOYEE_TIMEOFF__EMPLOYEE_TIMEOFF_CATEGORY_FKEY = Internal.createForeignKey(JEmployeeTimeoff.EMPLOYEE_TIMEOFF, DSL.name("employee_timeoff_category_fkey"), new TableField[] { JEmployeeTimeoff.EMPLOYEE_TIMEOFF.CATEGORY_ID }, Keys.TIMEOFF_CATEGORY_PKEY, new TableField[] { JTimeoffCategory.TIMEOFF_CATEGORY.ID }, true);
     public static final ForeignKey<JEmployeeTimeoffRecord, JEmployeeRecord> EMPLOYEE_TIMEOFF__EMPLOYEE_TIMEOFF_EMPLOYEE_ID_FKEY = Internal.createForeignKey(JEmployeeTimeoff.EMPLOYEE_TIMEOFF, DSL.name("employee_timeoff_employee_id_fkey"), new TableField[] { JEmployeeTimeoff.EMPLOYEE_TIMEOFF.EMPLOYEE_ID }, Keys.EMPLOYEE_PKEY, new TableField[] { JEmployee.EMPLOYEE.ID }, true);
 }

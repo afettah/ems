@@ -8,6 +8,8 @@ import com.tech.ems.jooq.generated.tables.JEmployee;
 import com.tech.ems.jooq.generated.tables.JEmployeeHistory;
 import com.tech.ems.jooq.generated.tables.JEmployeeTimeoff;
 import com.tech.ems.jooq.generated.tables.JFlywaySchemaHistory;
+import com.tech.ems.jooq.generated.tables.JI18nMessage;
+import com.tech.ems.jooq.generated.tables.JPosition;
 import com.tech.ems.jooq.generated.tables.JTimeoffCategory;
 
 
@@ -36,6 +38,16 @@ public class Tables {
      * The table <code>ems.flyway_schema_history</code>.
      */
     public static final JFlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+
+    /**
+     * The table <code>ems.i18n_message</code>.
+     */
+    public static final JI18nMessage I18N_MESSAGE = JI18nMessage.I18N_MESSAGE;
+
+    /**
+     * The table <code>ems.position</code>.
+     */
+    public static final JPosition POSITION = JPosition.POSITION;
 
     /**
      * The table <code>ems.timeoff_category</code>.

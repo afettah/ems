@@ -90,9 +90,7 @@ public class TableDisplayMapper {
     private static void printSeparator(int[] columnWidths, StringBuilder builder) {
         for (int width : columnWidths) {
             builder.append("+");
-            for (int i = 0; i < width + 2; i++) {
-                builder.append("-");
-            }
+            builder.append("-".repeat(Math.max(0, width + 2)));
         }
         builder.append("+\n");
     }

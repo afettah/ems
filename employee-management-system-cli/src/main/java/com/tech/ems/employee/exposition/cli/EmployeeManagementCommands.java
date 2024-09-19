@@ -5,6 +5,8 @@ import com.tech.ems.employee.EmployeeCreateCommand;
 import com.tech.ems.employee.EmployeeFilter;
 import com.tech.ems.employee.EmployeeService;
 import com.tech.ems.employee.EmployeeUpdateCommand;
+import com.tech.ems.employee.position.Position;
+import com.tech.ems.employee.position.PositionRepository;
 import com.tech.ems.employee.salary.Money;
 import com.tech.ems.employee.salary.Salary;
 import lombok.AllArgsConstructor;
@@ -25,11 +27,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 class EmployeeManagementCommands {
     private final EmployeeService employeeService;
     private final EmployeeCliMapper employeeCliMapper;
+    private final PositionRepository positionRepository;
 
     @ShellMethod(key = "employees create", value = "Create a new employee")
     public String createEmployee(@ShellOption(help = "employee email") String email, @ShellOption(help = "employee name") String name, @ShellOption(help = "employee position") String position, @ShellOption(help = "employee monthly base salary in euro") double salary) {
         try {
-            var employeeCreateCommand = new EmployeeCreateCommand(email, name, position, Salary.fixedMonthlySalary(Money.euro(salary)));
+            var employeeCreateCommand = new EmployeeCreateCommand(email, name, getOrCreatePosition(position), Salary.fixedMonthlySalary(Money.euro(salary)));
             employeeService.create(employeeCreateCommand);
             return "Employee created successfully.";
         } catch (Exception e) {
@@ -72,7 +75,7 @@ class EmployeeManagementCommands {
     @ShellMethod(key = "employees update", value = "Update an employee's details")
     public String updateEmployee(String id, String position, Double salary) {
         try {
-            employeeService.update(employeeCliMapper.mapToEmployeeId(id), new EmployeeUpdateCommand(position, salary != null ? Salary.fixedMonthlySalary(Money.euro(salary)) : null));
+            employeeService.update(employeeCliMapper.mapToEmployeeId(id), new EmployeeUpdateCommand(getOrCreatePosition(position), salary != null ? Salary.fixedMonthlySalary(Money.euro(salary)) : null));
             return "Employee updated successfully.";
         } catch (Exception e) {
             return "Error updating employee: " + e.getMessage();
@@ -93,7 +96,7 @@ class EmployeeManagementCommands {
                     String position = "Position " + employeeNumber;
                     double salary = 1000d + (employeeNumber * 100);
                     try {
-                        var employeeCreateCommand = new EmployeeCreateCommand(email, name, position, Salary.fixedMonthlySalary(Money.euro(salary)));
+                        var employeeCreateCommand = new EmployeeCreateCommand(email, name, getOrCreatePosition(position), Salary.fixedMonthlySalary(Money.euro(salary)));
                         employeeService.create(employeeCreateCommand);
                         successCount.incrementAndGet();
                     } catch (Exception e) {
@@ -107,6 +110,16 @@ class EmployeeManagementCommands {
             executorService.awaitTermination(1, TimeUnit.MINUTES);
         }
         return "Employees generated successfully. Success: " + successCount.get() + ", Errors: " + errorCount.get();
+    }
+
+    private Position getOrCreatePosition(String name) {
+        String code = name.replaceAll("[\\s]+", "-")
+                .toLowerCase();
+        var position = positionRepository.findByCode(code);
+        if (position.isEmpty()) {
+            positionRepository.create(new Position(code, name));
+        }
+        return positionRepository.findByCode(code).orElseThrow();
     }
 
 }

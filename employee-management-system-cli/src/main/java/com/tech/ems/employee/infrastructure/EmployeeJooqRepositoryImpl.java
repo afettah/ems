@@ -5,6 +5,7 @@ import com.tech.ems.employee.Employee;
 import com.tech.ems.employee.EmployeeFilter;
 import com.tech.ems.employee.EmployeeId;
 import com.tech.ems.employee.EmployeeRepository;
+import com.tech.ems.employee.position.PositionRepository;
 import com.tech.ems.employee.salary.Salary;
 import com.tech.ems.jooq.generated.tables.records.JEmployeeRecord;
 import com.tech.ems.shared.infrastructure.HistoryJooqRepository;
@@ -27,6 +28,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
     public static final String EMPLOYEE_ENTITY = "Employee";
     private final DSLContext dslContext;
     private final HistoryJooqRepository historyRepository;
+    private final PositionRepository positionRepository;
 
     @Override
     @Transactional
@@ -35,7 +37,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
                 employee.getId().uuid(),
                 employee.getEmail(),
                 employee.getName(),
-                employee.getPosition(),
+                employee.getPosition().code(),
                 JsonbMapper.mapToJsonb(employee.getSalary()),
                 Instant.now(),
                 null
@@ -58,7 +60,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
         dslContext.update(EMPLOYEE)
                 .set(EMPLOYEE.NAME, employee.getName())
                 .set(EMPLOYEE.EMAIL, employee.getEmail())
-                .set(EMPLOYEE.POSITION, employee.getPosition())
+                .set(EMPLOYEE.POSITION, employee.getPosition().code())
                 .set(EMPLOYEE.SALARY, JsonbMapper.mapToJsonb(employee.getSalary()))
                 .set(EMPLOYEE.UPDATED_AT, Instant.now())
                 .where(EMPLOYEE.ID.eq(employee.getId().uuid()))
@@ -76,7 +78,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
         return dslContext.selectFrom(EMPLOYEE)
                 .where(EMPLOYEE.ID.eq(id.uuid()))
                 .fetchOptional()
-                .map(EmployeeJooqRepositoryImpl::mapToEmployee);
+                .map(this::mapToEmployee);
     }
 
     @Override
@@ -90,7 +92,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
         return dslContext.selectFrom(EMPLOYEE)
                 .orderBy(EMPLOYEE.CREATED_AT)
                 .fetch()
-                .map(EmployeeJooqRepositoryImpl::mapToEmployee);
+                .map(this::mapToEmployee);
     }
 
     @Override
@@ -99,7 +101,7 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
                 .where(toCondition(filter))
                 .orderBy(EMPLOYEE.CREATED_AT)
                 .fetch()
-                .map(EmployeeJooqRepositoryImpl::mapToEmployee);
+                .map(this::mapToEmployee);
     }
 
     private Condition toCondition(EmployeeFilter filter) {
@@ -121,12 +123,12 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
         }
     }
 
-    private static Employee mapToEmployee(JEmployeeRecord employeesRecord) {
+    private Employee mapToEmployee(JEmployeeRecord employeesRecord) {
         return new Employee(
                 new EmployeeId(employeesRecord.getId()),
                 employeesRecord.getEmail(),
                 employeesRecord.getName(),
-                employeesRecord.getPosition(),
+                positionRepository.findByCode(employeesRecord.getPosition()).orElseThrow(),
                 JsonbMapper.mapFromJsonb(employeesRecord.getSalary(), Salary.class),
                 employeesRecord.getCreatedAt(),
                 employeesRecord.getUpdatedAt()

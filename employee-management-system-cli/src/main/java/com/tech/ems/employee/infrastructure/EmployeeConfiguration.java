@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tech.ems.employee.EmployeeRepository;
 import com.tech.ems.employee.EmployeeService;
+import com.tech.ems.employee.position.PositionRepository;
 import com.tech.ems.shared.infrastructure.HistoryJooqRepository;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +19,13 @@ class EmployeeConfiguration {
     }
 
     @Bean
-    public EmployeeRepository employeeRepository(DSLContext dslContext, HistoryJooqRepository historyRepository) {
-        return new EmployeeJooqRepositoryImpl(dslContext, historyRepository);
+    public EmployeeRepository employeeRepository(DSLContext dslContext, HistoryJooqRepository historyRepository, PositionRepository positionRepository) {
+        return new EmployeeJooqRepositoryImpl(dslContext, historyRepository, positionRepository);
+    }
+
+    @Bean
+    public PositionRepository positionRepository(DSLContext dslContext) {
+        return new PositionJooqRepositoryImpl(dslContext);
     }
 
     @Bean

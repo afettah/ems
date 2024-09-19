@@ -4,13 +4,16 @@ import com.tech.ems.employee.AbstractITest;
 import com.tech.ems.employee.DataNotFoundException;
 import com.tech.ems.employee.Employee;
 import com.tech.ems.employee.EmployeeFilter;
+import com.tech.ems.employee.position.Position;
+import com.tech.ems.employee.position.PositionRepository;
 import com.tech.ems.employee.salary.Money;
 import com.tech.ems.employee.salary.Salary;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,10 +21,19 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Slf4j
 class EmployeeJooqRepositoryImplTest extends AbstractITest {
 
     @Autowired
     private EmployeeJooqRepositoryImpl employeeJooqRepositoryImpl;
+    @Autowired
+    private PositionRepository positionRepository;
+
+    @BeforeEach
+    void setUp() {
+        super.clearDatabase();
+        createPosition(EmployeeFixtures.softwareEnginnerPosition());
+    }
 
     @Nested
     class Create {
@@ -58,12 +70,11 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
     @Nested
     class Update {
         @Test
-        @Transactional
         void update_should_update_employee() {
             //given
             Employee employee = EmployeeFixtures.generate();
             employeeJooqRepositoryImpl.create(employee);
-            Employee updatedEmployee = new Employee(employee.getId(), "new-email@domai.com", "new-name", "new-position", Salary.fixedMonthlySalary(Money.euro(1)), null, null);
+            Employee updatedEmployee = new Employee(employee.getId(), "new-email@domai.com", "new-name", createPosition("new-position"), Salary.fixedMonthlySalary(Money.euro(1)), null, null);
 
             //when
             employeeJooqRepositoryImpl.update(updatedEmployee);
@@ -92,6 +103,7 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
 
     @Nested
     class FindAll {
+
         @Test
         void findAll_should_return_all_employees() {
             //given
@@ -155,7 +167,7 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
         @Test
         void findAll_should_filter_by_position() {
             //given
-            String position = "Search-Position";
+            Position position = createPosition("Search-Position");
             List<Employee> expectedEmployees = List.of(
                     EmployeeFixtures.generate(),
                     EmployeeFixtures.generate(),
@@ -175,7 +187,7 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
             create(EmployeeFixtures.generate());
 
             //when
-            var employees = employeeJooqRepositoryImpl.findAll(new EmployeeFilter(null, null, null, position));
+            var employees = employeeJooqRepositoryImpl.findAll(new EmployeeFilter(null, null, null, position.code()));
 
             //then
             assertThat(employees)
@@ -186,8 +198,9 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
         void findAll_should_filter_by_email_case_insensitive() {
             //given
             String email = "email@domai.com";
+            Position position = createPosition("position");
 
-            Employee employee = new Employee(EmployeeFixtures.generate().getId(), email, "name", "position", Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
+            Employee employee = new Employee(EmployeeFixtures.generate().getId(), email, "name", position, Salary.fixedMonthlySalary(Money.euro(10000)), Instant.now(), Instant.now());
             create(employee);
 
             //other employees
@@ -243,4 +256,13 @@ class EmployeeJooqRepositoryImplTest extends AbstractITest {
         return employee;
     }
 
+    private Position createPosition(Position position) {
+        positionRepository.create(position);
+        log.info("Position created: {}", position);
+        return position;
+    }
+
+    private Position createPosition(String code) {
+        return createPosition(new Position(code, code + "name"));
+    }
 }
