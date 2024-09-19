@@ -4,10 +4,12 @@
 package com.tech.employee.jooq.generated;
 
 
+import com.tech.employee.jooq.generated.tables.JEmployeeHistory;
 import com.tech.employee.jooq.generated.tables.JEmployeeTimeoff;
 import com.tech.employee.jooq.generated.tables.JEmployees;
 import com.tech.employee.jooq.generated.tables.JFlywaySchemaHistory;
 import com.tech.employee.jooq.generated.tables.JTimeoffCategory;
+import com.tech.employee.jooq.generated.tables.records.JEmployeeHistoryRecord;
 import com.tech.employee.jooq.generated.tables.records.JEmployeeTimeoffRecord;
 import com.tech.employee.jooq.generated.tables.records.JEmployeesRecord;
 import com.tech.employee.jooq.generated.tables.records.JFlywaySchemaHistoryRecord;
@@ -30,6 +32,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<JEmployeeHistoryRecord> EMPLOYEE_HISTORY_PKEY = Internal.createUniqueKey(JEmployeeHistory.EMPLOYEE_HISTORY, DSL.name("employee_history_pkey"), new TableField[] { JEmployeeHistory.EMPLOYEE_HISTORY.ID }, true);
     public static final UniqueKey<JEmployeeTimeoffRecord> EMPLOYEE_TIMEOFF_PKEY = Internal.createUniqueKey(JEmployeeTimeoff.EMPLOYEE_TIMEOFF, DSL.name("employee_timeoff_pkey"), new TableField[] { JEmployeeTimeoff.EMPLOYEE_TIMEOFF.ID }, true);
     public static final UniqueKey<JEmployeesRecord> EMPLOYEES_PKEY = Internal.createUniqueKey(JEmployees.EMPLOYEES, DSL.name("employees_pkey"), new TableField[] { JEmployees.EMPLOYEES.ID }, true);
     public static final UniqueKey<JFlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { JFlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);

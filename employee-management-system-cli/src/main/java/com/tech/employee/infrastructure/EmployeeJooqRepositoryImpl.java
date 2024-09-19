@@ -2,8 +2,10 @@ package com.tech.employee.infrastructure;
 
 import com.tech.employee.domain.*;
 import com.tech.employee.domain.salary.Salary;
+import com.tech.shared.infrastructure.HistoryJooqRepository;
 import com.tech.shared.infrastructure.JsonbMapper;
 import com.tech.employee.jooq.generated.tables.records.JEmployeesRecord;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -14,27 +16,42 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.tech.employee.jooq.generated.Tables.EMPLOYEES;
+import static com.tech.employee.jooq.generated.Tables.EMPLOYEE_HISTORY;
 
 @AllArgsConstructor
 class EmployeeJooqRepositoryImpl implements EmployeeRepository {
     public static final String EMPLOYEE_ENTITY = "Employee";
     private final DSLContext dslContext;
+    private final HistoryJooqRepository historyRepository;
 
     @Override
+    @Transactional
     public void create(Employee employee) {
+        JEmployeesRecord employeesRecord = new JEmployeesRecord(
+                employee.getId().uuid(),
+                employee.getEmail(),
+                employee.getName(),
+                employee.getPosition(),
+                JsonbMapper.mapToJsonb(employee.getSalary()),
+                Instant.now(),
+                null
+        );
         dslContext.insertInto(EMPLOYEES)
-                .set(EMPLOYEES.ID, employee.getId().uuid())
-                .set(EMPLOYEES.NAME, employee.getName())
-                .set(EMPLOYEES.EMAIL, employee.getEmail())
-                .set(EMPLOYEES.POSITION, employee.getPosition())
-                .set(EMPLOYEES.SALARY, JsonbMapper.mapToJsonb(employee.getSalary()))
-                .set(EMPLOYEES.CREATED_AT, Instant.now())
+                .set(employeesRecord)
                 .execute();
+        historyRepository.historizeCreation(EMPLOYEE_HISTORY, employeesRecord);
     }
 
     @Override
+    @Transactional
     public void update(Employee employee) {
-        int updated = dslContext.update(EMPLOYEES)
+        var beforeValue = dslContext.select(EMPLOYEES.fields()).from(EMPLOYEES)
+                .where(EMPLOYEES.ID.eq(employee.getId().uuid()))
+                .fetchOptionalInto(JEmployeesRecord.class);
+        if (beforeValue.isEmpty()) {
+            throw new DataNotFoundException(EMPLOYEE_ENTITY, employee.getId());
+        }
+        dslContext.update(EMPLOYEES)
                 .set(EMPLOYEES.NAME, employee.getName())
                 .set(EMPLOYEES.EMAIL, employee.getEmail())
                 .set(EMPLOYEES.POSITION, employee.getPosition())
@@ -42,9 +59,12 @@ class EmployeeJooqRepositoryImpl implements EmployeeRepository {
                 .set(EMPLOYEES.UPDATED_AT, Instant.now())
                 .where(EMPLOYEES.ID.eq(employee.getId().uuid()))
                 .execute();
-        if (updated == 0) {
-            throw new DataNotFoundException(EMPLOYEE_ENTITY, employee.getId());
-        }
+
+        var afterValue = dslContext.select(EMPLOYEES.fields()).from(EMPLOYEES)
+                .where(EMPLOYEES.ID.eq(employee.getId().uuid()))
+                .fetchOneInto(JEmployeesRecord.class);
+
+        historyRepository.historizeUpdate(EMPLOYEE_HISTORY, beforeValue.get(), afterValue);
     }
 
     @Override
